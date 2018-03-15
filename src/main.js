@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import echarts from 'echarts'
 import axios from 'axios'
+import './assets/js/globel'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
