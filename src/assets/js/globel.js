@@ -1,1 +1,5 @@
-global.HEADER = ''
+global.HEADER = [{
+  hospital: '',
+  office: '',
+  lesion: ''
+}]

@@ -23,9 +23,9 @@ export default {
   },
   mounted () {
     console.log('globleBasePage', global.HEADER[0].hospital)
-    this.hospital = global.HEADER[0].hospital
-    this.office = global.HEADER[0].office
-    this.lesion = global.HEADER[0].lesion
+    this.hospital = localStorage.hospital
+    this.office = localStorage.office
+    this.lesion = localStorage.lesion
   }
 }
 </script>

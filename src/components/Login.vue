@@ -90,6 +90,7 @@ export default {
   },
   methods: {
     submitForm (formName) {
+      localStorage.clear()
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$ajax.post('http://101.200.52.233:8080/api/v1.0/login', {
@@ -103,7 +104,11 @@ export default {
                 this.$router.push({path: '/bedInfo'})
                 console.log('data', response.data.data)
                 global.HEADER = response.data.data
-                console.log('globle', global.HEADER)
+                // window.localStorage.setItem(response.data.data)
+                localStorage.setItem('hospital', response.data.data[0].hospital)
+                localStorage.setItem('office', response.data.data[0].office)
+                localStorage.setItem('lesion', response.data.data[0].lesion)
+                console.log('localStorage', localStorage)
                 // this.$emit('headerInfo', response.data.data)
               }
             })

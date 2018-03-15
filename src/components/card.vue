@@ -216,6 +216,7 @@ export default {
                 this.patient.tel = this.$refs[formName].model.telephone
                 this.patient.doctor_name = this.$refs[formName].model.doctor
                 this.patient.id_number = this.$refs[formName].model.ID_card
+                this.patient.datas = []
                 this.dialogVisible = false
                 return dialogVisible
               }
