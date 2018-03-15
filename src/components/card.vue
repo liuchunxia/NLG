@@ -120,10 +120,6 @@ export default {
   name: 'card',
   data () {
     return {
-      record: [
-        { dates: ['2017-1-2', '2017-2-2'] },
-        { blood: ['7.2', '7.3'] }
-      ],
       unit: true,
       dialogVisible: false,
       patientForm: {

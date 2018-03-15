@@ -4,7 +4,7 @@
             <!--<img src="../assets/img/logo.png">-->
             <slot name="header">
                 <el-col class="top-left" :xs="24" :sm="6" :md="5" :lg="5" :xl="3"><img src="../assets/img/logo.png"></el-col>
-                <el-col class="top-right" :xs="24" :sm="18" :md="19" :lg="19" :xl="21"><h1>耐利血糖工作站</h1></el-col>
+                <el-col class="top-right" :xs="24" :sm="18" :md="19" :lg="19" :xl="21"><h1>{{hospital}}{{office}}{{lesion}}耐利血糖工作站</h1></el-col>
             </slot>
         </el-header>
         <el-main><slot name="main"></slot></el-main>
@@ -14,10 +14,18 @@
 <script>
 export default {
   name: 'BasePage',
-  props: ['headerMsg', 'msgfromfa'],
+  data () {
+    return {
+      hospital: '',
+      office: '',
+      lesion: ''
+    }
+  },
   mounted () {
-    console.log('headerMsg', this.headerMsg)
-    console.log('msgfromfa', this.msgfromfa)
+    console.log('globleBasePage', global.HEADER[0].hospital)
+    this.hospital = global.HEADER[0].hospital
+    this.office = global.HEADER[0].office
+    this.lesion = global.HEADER[0].lesion
   }
 }
 </script>

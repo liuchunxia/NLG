@@ -86,6 +86,8 @@ export default {
     }
   },
   props: ['hospital'],
+  mounted () {
+  },
   methods: {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -100,7 +102,9 @@ export default {
               if (response.data.status === 'success') {
                 this.$router.push({path: '/bedInfo'})
                 console.log('data', response.data.data)
-                this.$emit('headerInfo', response.data.data)
+                global.HEADER = response.data.data
+                console.log('globle', global.HEADER)
+                // this.$emit('headerInfo', response.data.data)
               }
             })
             .catch(function (error) {

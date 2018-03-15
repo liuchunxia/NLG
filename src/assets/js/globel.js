@@ -1,1 +1,1 @@
-global.HEADER = 'hello'
+global.HEADER = ''

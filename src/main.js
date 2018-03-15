@@ -21,6 +21,8 @@ Vue.use(ElementUI)
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ajax = axios
 
+// Vue.prototype.defines = defines
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

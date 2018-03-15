@@ -1,7 +1,7 @@
 <template>
-    <BasePage v-bind:headerMsg="headerMsg" v-bind:msgfromfa="show">
+    <BasePage>
         <el-row slot="main">
-            <el-row :is="who" v-on:headerInfo="headerInfo"></el-row>
+            <el-row :is="who"></el-row>
             <transition name="fold" class="login">
                 <a class="login" @click="changeComponent" >
                   {{show ? '登录' : '注册'}}
@@ -28,8 +28,7 @@ export default {
       who: 'register',
       show: true,
       forgeted: true,
-      isEditing: 'save',
-      headerMsg: []
+      isEditing: 'save'
     }
   },
   methods: {
@@ -56,10 +55,6 @@ export default {
         this.show = true
         this.forgeted = false
       }
-    },
-    headerInfo: function (msg) {
-      this.headerMsg = msg
-      console.log('header', this.headerMsg)
     }
   }
 }
