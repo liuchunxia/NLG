@@ -24,14 +24,10 @@
           <router-link to="/machine">备用机一</router-link>
           <a>备用机二</a>
         </el-row>
-        <moreInfo v-show="showMore" v-bind:currentPatient="currentPatient" v-bind:unit="unit" v-bind:meanValue="meanValue" v-on:meanValue="meanValue" v-on:chart="chart"></moreInfo>
-        <el-row class="function" v-show="showMore">
+        <moreInfo v-show="showMore" v-bind:showMore="showMore" v-bind:currentPatient="currentPatient" v-bind:unit="unit" v-on:getBack="getBack" v-bind:showCard="showCard"></moreInfo>
+        <el-row class="backFunction" v-show="showMore">
           <a @click="returnBack">返回</a>
-          <a>平均值：{{mean}}</a>
-          <a @click="drawLine">数值/曲线</a>
-          <a>打印</a>
         </el-row>
-        <el-col id="myChart" :style="{width: '100%', height: '300px'}" v-show="showChart"></el-col>
         <!---------------连接血糖仪------------->
         <!--step1-->
         <!--<el-dialog-->
@@ -84,19 +80,7 @@ export default {
   data () {
     return {
       currentPage: 1,
-      patients: [
-        // { number: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 4.0}, {dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 2, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 11.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 3, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 4, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: true, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 5, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 6, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 7, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 8, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 9, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, id: '34214', doctor: 'Sam', currentState: false, record: [{dates: '2018-01-02', time: '06:00', blood: 7.2}, {dates: '2018-01-02', time: '06:00', blood: 7.2}] },
-        // { number: 10, SN: '', name: '', telephone: '', sex: '', age: '', id: '', doctor: '', currentState: '', record: [{dates: '', blood: ''}] },
-        // { number: 11, SN: '', name: '', telephone: '', sex: '', age: '', id: '', doctor: '', currentState: '', record: [{dates: '', blood: ''}] }
-      ],
+      patients: [],
       showMore: false,
       showCard: true,
       currentPatient: {},
@@ -137,15 +121,18 @@ export default {
     show (index) {
       console.log('aaa')
     },
-    click: function () {
-      alert('aaa')
+    getBack (msg) {
+      console.log('getBack', msg)
     },
+    // click: function () {
+    //   alert('aaa')
+    // },
     inputInfo: function (msg) {
       console.log(msg)
     },
     getmore: function (msg) {
-      this.showMore = !this.showMore
-      this.showCard = !this.showCard
+      this.showMore = true
+      this.showCard = false
       // console.log('msg', msg[0])
       this.currentPatient = msg[0]
       this.unit = msg[1]
@@ -157,13 +144,13 @@ export default {
         // console.log(this.currentPatient.datas)
       }
     },
-    meanValue: function (msg) {
-      this.mean = msg
-      console.log(msg)
-    },
+    // meanValue: function (msg) {
+    //   this.mean = msg
+    //   console.log(msg)
+    // },
     returnBack: function () {
-      this.showMore = !this.showMore
-      this.showCard = !this.showCard
+      this.showMore = false
+      this.showCard = true
     },
     prePage: function () {
       console.log('page:', this.currentPage)
@@ -192,40 +179,44 @@ export default {
       this.chartData = msg
       // console.log(this.chartData)
     },
+    returnMore () {
+      this.showChart = false
+      this.showMore = true
+    },
     drawLine: function () {
-      this.showChart = !this.showChart
-      this.showMore = !this.showMore
-      // console.log('chart')
-      // console.log(this.chart)
-      // console.log('chartend')
-      console.log('chart')
-      console.log(this.chartData)
-      this.chartData.forEach(val => {
-        this.bloodData.push(val.blood)
-        this.date.push(val.dates)
-        // console.log(val.blood)
-      })
-      // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
-      document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-      console.log(document.documentElement.clientWidth)
-      console.log('chartend')
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
-      // 绘制图表
-      myChart.setOption({
-        title: { text: '在Vue中使用echarts' },
-        tooltip: {},
-        xAxis: {
-          type: 'category',
-          data: this.date
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: this.bloodData,
-          type: 'line'
-        }]
-      })
+      console.log('chart', this.chartData)
+      if (this.chartData.length === 0) {
+        this.notice()
+      } else {
+        this.showChart = true
+        this.showMore = false
+        this.chartData.forEach(val => {
+          this.bloodData.push(val.glucose)
+          this.date.push(val.time)
+          // console.log(val.blood)
+        })
+        // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
+        document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
+        console.log(document.documentElement.clientWidth)
+        console.log('chartend')
+        let myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        myChart.setOption({
+          title: { text: '在Vue中使用echarts' },
+          tooltip: {},
+          xAxis: {
+            type: 'category',
+            data: this.date
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: this.bloodData,
+            type: 'line'
+          }]
+        })
+      }
     },
     getNet: function (formName) {
       this.$refs[formName].validate((valid) => {
@@ -291,14 +282,18 @@ export default {
   .cards{
     margin-bottom: 100px;
   }
-  .function{
+  .backFunction{
     position:fixed;
     bottom:0px;
     width:100%;
     height:100px;
+    margin-bottom: 10px;
+    z-index: 99;
     /*background-color: #f6724b;*/
   }
-  .function a{
+  .backFunction a{
+    border-radius: 4px;
+    float: left;
     cursor: pointer;
     padding: 10px 75px;
     /*margin-left: 130px;*/
