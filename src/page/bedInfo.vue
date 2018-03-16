@@ -144,10 +144,6 @@ export default {
         // console.log(this.currentPatient.datas)
       }
     },
-    // meanValue: function (msg) {
-    //   this.mean = msg
-    //   console.log(msg)
-    // },
     returnBack: function () {
       this.showMore = false
       this.showCard = true
@@ -173,49 +169,6 @@ export default {
         this.getAll()
       } else {
         this.getAll()
-      }
-    },
-    chart: function (msg) {
-      this.chartData = msg
-      // console.log(this.chartData)
-    },
-    returnMore () {
-      this.showChart = false
-      this.showMore = true
-    },
-    drawLine: function () {
-      console.log('chart', this.chartData)
-      if (this.chartData.length === 0) {
-        this.notice()
-      } else {
-        this.showChart = true
-        this.showMore = false
-        this.chartData.forEach(val => {
-          this.bloodData.push(val.glucose)
-          this.date.push(val.time)
-          // console.log(val.blood)
-        })
-        // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
-        document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-        console.log(document.documentElement.clientWidth)
-        console.log('chartend')
-        let myChart = this.$echarts.init(document.getElementById('myChart'))
-        // 绘制图表
-        myChart.setOption({
-          title: { text: '在Vue中使用echarts' },
-          tooltip: {},
-          xAxis: {
-            type: 'category',
-            data: this.date
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [{
-            data: this.bloodData,
-            type: 'line'
-          }]
-        })
       }
     },
     getNet: function (formName) {
