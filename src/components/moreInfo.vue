@@ -75,20 +75,20 @@
       <!--编辑界面-->
       <el-dialog title="编辑" :close-on-click-modal="false" :visible.sync="dialogVisible" width="484px">
         <el-form :model="editForm" label-width="80px" ref="editForm" >
-          <el-form-item label="日期" prop="dates">
+          <el-form-item label="日期" prop="date">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
             <!--<el-time-picker type="date" placeholder="选择时间" v-model="editForm.date" style="width: 100%;"  format="yyyy:MM:DD"></el-time-picker>-->
-            <el-date-picker type="date" placeholder="选择日期" id="dates" v-model="editForm.dates" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" id="dates" v-model="editForm.date" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label="时间" prop="time">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
             <el-time-picker type="time" placeholder="选择时间" id="time" v-model="editForm.time" value-format="HH:mm" format="HH:mm"></el-time-picker>
           </el-form-item>
-          <el-form-item label="血糖值" prop="blood" :rules="[
+          <el-form-item label="血糖值" prop="glucose" :rules="[
        // { required: true, message: '血糖值不能为空'},
        { type: 'number', message: '血糖值必须为数字值'}]">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
-            <el-input type="blood" placeholder="填写血糖值"  style="width: 220px" v-model.number="editForm.blood"></el-input>
+            <el-input type="blood" placeholder="填写血糖值"  style="width: 220px" v-model.number="editForm.glucose"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -140,9 +140,9 @@ export default {
       dialogVisible: false,
       editForm: {
         id: 0,
-        dates: '',
+        date: '',
         time: '',
-        blood: 0
+        glucose: 0
       },
       index: '',
       multipleSelection: [],
@@ -162,7 +162,9 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       },
-      url: ''
+      url: '',
+      edit: false,
+      hidden: false
     }
   },
   props: ['currentPatient', 'unit', 'showMore'],
@@ -174,7 +176,12 @@ export default {
       if (this.showMore) {
         this.getMean()
       }
-      console.log('showMore: %s, old: %s', val, oldVal)
+    },
+    hidden: function (val, oldVal) {
+      console.log('hidden: %s, old: %s', val, oldVal)
+      if (this.hidden) {
+        this.getHidden()
+      }
     }
   },
   methods: {
@@ -191,33 +198,20 @@ export default {
         })
         console.log(this.sumBlood)
         this.meanValue = (this.sumBlood / vals.length).toFixed(2)
-        // this.meanValue.toFixed(2)
-        // this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
-        // this.$emit('meanValue', this.meanValue)
         console.log('sumBlood', this.sumBlood)
         console.log('meanValue', this.meanValue)
       }
-      // if (isNaN(this.meanValue) || vals.length === 0) {
-      //   this.currentPatient.datas.forEach(val => {
-      //     this.sumBlood += val.glucose
-      //     // console.log(val.blood)
-      //   })
-      //   this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
-      //   // this.meanValue = this.meanValue.toFixed(2)
-      //   this.$emit('meanValue', this.meanValue)
-      // }
     },
     getMean () {
       this.currentPatient.datas.forEach(val => {
         this.sumBlood += val.glucose
-        // console.log(val.blood)
       })
       this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
     },
     handleEdit (index, row) {
       this.dialogPassword = true
-      // console.log(typeof (this.currentPatient.record[0].blood))
       this.index = index
+      this.edit = true
       // console.log(row)
       // this.dialogVisible = true
       // this.editFormVisible = true
@@ -228,15 +222,24 @@ export default {
     },
     handleDelete (index, row) {
       console.log(index, row)
+      this.dialogPassword = true
       this.url = this.currentPatient.datas[index].url
-      this.$ajax.put('http://101.200.52.233:8080' + this.url)
+      console.log('index', index)
+      this.index = index
+    },
+    getHidden () {
+      this.$ajax.put('http://101.200.52.233:8080' + this.url, {
+        'hidden': true
+      })
         .then((response) => {
+          this.currentPatient.datas.splice(this.index, 1)
           console.log('resp', response)
         })
         .catch(function (error) {
           console.log('error', error)
           alert('网络连接有误！')
         })
+      this.hidden = false
     },
     editSubmit (formName) {
       this.$refs[formName].validate((valid) => {
@@ -247,9 +250,9 @@ export default {
             'glucose': this.$refs[formName].model.blood
           })
             .then((response) => {
-              this.currentPatient.datas[this.index].date = this.editForm.dates
+              this.currentPatient.datas[this.index].date = this.editForm.date
               this.currentPatient.datas[this.index].time = this.editForm.time
-              this.currentPatient.datas[this.index].glucose = this.editForm.blood
+              this.currentPatient.datas[this.index].glucose = this.editForm.glucose
               console.log('resp', response)
               this.editFormVisible = false
               this.dialogVisible = false
@@ -344,14 +347,15 @@ export default {
               console.log('resp.statusText', response.data.status)
               if (response.data.status === 'success') {
                 console.log('data', response)
-                this.dialogPassword = false
-                this.dialogVisible = true
-                // this.handleEdit(index, row)
-                // this.index = index
-                // // console.log(row)
-                // this.dialogVisible = true
-                // this.editFormVisible = true
-                // this.editForm = Object.assign({}, row)
+                if (this.edit) {
+                  this.dialogPassword = false
+                  this.dialogVisible = true
+                  this.edit = true
+                }
+                if (!this.hidden) {
+                  this.dialogPassword = false
+                  this.hidden = true
+                }
               }
             })
             .catch(function (error) {
