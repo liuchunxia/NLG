@@ -60,22 +60,33 @@
         <!--<a id="downlink" style="display: none"></a>-->
       <!--</el-row>-->
 
+      <!--编辑密码确定-->
+      <el-dialog title="用户密码" :close-on-click-modal="false" :visible.sync="dialogPassword" width="484px">
+        <el-form :model="passwordForm" label-width="80px" ref="passwordForm" :rules="passwordRules">
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="passwordForm.password" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click.native="dialogPassword = false">取消</el-button>
+          <el-button type="primary" @click.native="passwordSubmit('passwordForm')" :loading="editLoading">提交</el-button>
+        </div>
+      </el-dialog>
       <!--编辑界面-->
       <el-dialog title="编辑" :close-on-click-modal="false" :visible.sync="dialogVisible" width="484px">
         <el-form :model="editForm" label-width="80px" ref="editForm" >
           <el-form-item label="日期" prop="dates">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
             <!--<el-time-picker type="date" placeholder="选择时间" v-model="editForm.date" style="width: 100%;"  format="yyyy:MM:DD"></el-time-picker>-->
-            <el-date-picker type="date" placeholder="选择日期" v-model="editForm.dates" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" id="dates" v-model="editForm.dates" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
-          <el-form-item label="时间" prop="date2">
+          <el-form-item label="时间" prop="time">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
-            <el-time-picker type="time" placeholder="选择时间" v-model="editForm.time" value-format="HH:mm" format="HH:mm"></el-time-picker>
+            <el-time-picker type="time" placeholder="选择时间" id="time" v-model="editForm.time" value-format="HH:mm" format="HH:mm"></el-time-picker>
           </el-form-item>
           <el-form-item label="血糖值" prop="blood" :rules="[
        // { required: true, message: '血糖值不能为空'},
-      { type: 'number', message: '血糖值必须为数字值'}
-    ]">
+       { type: 'number', message: '血糖值必须为数字值'}]">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
             <el-input type="blood" placeholder="填写血糖值"  style="width: 220px" v-model.number="editForm.blood"></el-input>
           </el-form-item>
@@ -141,7 +152,17 @@ export default {
       showChart: false,
       chart: [],
       showData: true,
-      getBack: false
+      getBack: false,
+      dialogPassword: false,
+      passwordForm: {
+        password: ''
+      },
+      passwordRules: {
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      },
+      url: ''
     }
   },
   props: ['currentPatient', 'unit', 'showMore'],
@@ -194,25 +215,49 @@ export default {
       this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
     },
     handleEdit (index, row) {
+      this.dialogPassword = true
       // console.log(typeof (this.currentPatient.record[0].blood))
       this.index = index
       // console.log(row)
-      this.dialogVisible = true
-      this.editFormVisible = true
+      // this.dialogVisible = true
+      // this.editFormVisible = true
+
       this.editForm = Object.assign({}, row)
-      // console.log('aaa')
+      this.url = this.currentPatient.datas[this.index].url
+      console.log('nowData', this.currentPatient.datas[this.index])
     },
     handleDelete (index, row) {
       console.log(index, row)
+      this.url = this.currentPatient.datas[index].url
+      this.$ajax.put('http://101.200.52.233:8080' + this.url)
+        .then((response) => {
+          console.log('resp', response)
+        })
+        .catch(function (error) {
+          console.log('error', error)
+          alert('网络连接有误！')
+        })
     },
     editSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.currentPatient.record[this.index].dates = this.editForm.dates
-          this.currentPatient.record[this.index].time = this.editForm.time
-          this.currentPatient.record[this.index].blood = this.editForm.blood
-          this.editFormVisible = false
-          this.dialogVisible = false
+          this.$ajax.put('http://101.200.52.233:8080' + this.url, {
+            'date': this.$refs[formName].model.dates,
+            'time': this.$refs[formName].model.time,
+            'glucose': this.$refs[formName].model.blood
+          })
+            .then((response) => {
+              this.currentPatient.datas[this.index].date = this.editForm.dates
+              this.currentPatient.datas[this.index].time = this.editForm.time
+              this.currentPatient.datas[this.index].glucose = this.editForm.blood
+              console.log('resp', response)
+              this.editFormVisible = false
+              this.dialogVisible = false
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -287,6 +332,44 @@ export default {
     returnData () {
       this.showChart = false
       this.showData = true
+    },
+    passwordSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$ajax.post('http://101.200.52.233:8080/api/v1.0/operators/now/password', {
+            'password': this.$refs[formName].model.password
+          })
+            .then((response) => {
+              console.log('resp', response)
+              console.log('resp.statusText', response.data.status)
+              if (response.data.status === 'success') {
+                console.log('data', response)
+                this.dialogPassword = false
+                this.dialogVisible = true
+                // this.handleEdit(index, row)
+                // this.index = index
+                // // console.log(row)
+                // this.dialogVisible = true
+                // this.editFormVisible = true
+                // this.editForm = Object.assign({}, row)
+              }
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+      console.log('on login')
+      // this.ruleForm.then((resp) => {
+      //   console.log('after', resp)
+      //   if (resp.status === 'success') {
+      //     this.$router.push({path: '/'})
+      //   }
+      // })
     }
   }
 }
