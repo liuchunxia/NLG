@@ -245,7 +245,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$ajax.put('http://101.200.52.233:8080' + this.url, {
-            'date': this.$refs[formName].model.dates,
+            'date': this.$refs[formName].model.date,
             'time': this.$refs[formName].model.time,
             'glucose': this.$refs[formName].model.blood
           })

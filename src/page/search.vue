@@ -7,12 +7,15 @@
           <el-row>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
               <el-form-item label="姓名" prop="name" class="searchItem">
-                <el-input v-model="searchForm.name"></el-input>
+                <el-input v-model="searchForm.patient_name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
               <el-form-item label="性别" prop="sex" class="searchItem">
-                <el-input v-model="searchForm.sex"></el-input>
+                <el-radio-group v-model="searchForm.sex">
+                  <el-radio label="男"></el-radio>
+                  <el-radio label="女"></el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
@@ -23,27 +26,27 @@
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
               <el-form-item label="电话" prop="telephone" class="searchItem">
-                <el-input v-model="searchForm.telephone"></el-input>
+                <el-input v-model="searchForm.tel"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="6" :lg="5" id="idCard">
               <el-form-item class="searchItem" label="身份证/社保卡/就诊卡号">
               <!--<el-form-item class="searchItem">-->
                 <!--<span float="left">身份证/社保卡/就诊卡号</span>-->
-                <el-input v-model="searchForm.idCard"></el-input>
+                <el-input v-model="searchForm.id_number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="6" :lg="5">
               <el-form-item label="年龄阶段" class="searchItem">
                 <el-col :span="11">
                   <el-form-item prop="age1">
-                    <el-input type="number" v-model.number="searchForm.age1"></el-input>
+                    <el-input type="number" v-model.number="searchForm.min_age"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col class="line" :span="2">-</el-col>
                 <el-col :span="11">
                   <el-form-item prop="age2">
-                    <el-input type="number" v-model.number="searchForm.age2"></el-input>
+                    <el-input type="number" v-model.number="searchForm.max_age"></el-input>
                   </el-form-item>
                 </el-col>
               </el-form-item>
@@ -55,7 +58,8 @@
                   type="daterange"
                   range-separator="至"
                   start-placeholder="开始日期"
-                  end-placeholder="结束日期">
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -63,20 +67,20 @@
               <el-form-item label="血糖范围" prop="blood" class="searchItem">
                 <el-col :span="11">
                   <el-form-item prop="blood1">
-                    <el-input v-model.number="searchForm.blood1"></el-input>
+                    <el-input v-model.number="searchForm.min_glucose"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col class="line" :span="2">-</el-col>
                 <el-col :span="11">
                   <el-form-item prop="blood2">
-                    <el-input v-model.number="searchForm.blood2"></el-input>
+                    <el-input v-model.number="searchForm.max_glucose"></el-input>
                   </el-form-item>
                 </el-col>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
               <el-form-item class="searchItem">
-                <el-button type="primary" @click="submitForm('ruleForm')">搜索</el-button>
+                <el-button type="primary" @click="submitForm('searchForm')">搜索</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -235,16 +239,16 @@ export default {
   data () {
     return {
       searchForm: {
-        name: '',
+        patient_name: '',
         sex: '',
         age: '',
-        telephone: '',
-        idCard: '',
-        age1: '',
-        age2: '',
+        tel: '',
+        id_number: '',
+        min_age: '',
+        max_age: '',
         date: '',
-        blood1: '',
-        blood2: ''
+        max_glucose: '',
+        min_glucose: ''
       },
       patients: [
         { id: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
@@ -256,14 +260,17 @@ export default {
       ],
       multipleSelection: [],
       rules: {
-        blood1: [
+        min_glucose: [
           { type: 'number', message: '必须为数字' }
         ],
-        blood2: [
+        max_glucose: [
           { type: 'number', message: '必须为数字' }
         ],
         age: [
           { type: 'number', message: '年龄必须为数字值' }
+        ],
+        tel: [
+          {pattern: '^1[3|4|5|8][0-9]\\d{8}$', message: '手机号格式错误', trigger: 'blur'}
         ]
       },
       currentPage: 4,
@@ -292,7 +299,15 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          console.log('val', this.$refs[formName].model)
+          this.$ajax.get('http://101.200.52.233:8080/api/v1.0/patients/history', this.$refs[formName].model)
+            .then((response) => {
+              console.log('resp', response)
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
         } else {
           console.log('error submit!!')
           return false
