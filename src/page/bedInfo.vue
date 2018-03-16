@@ -25,8 +25,8 @@
           <a>备用机二</a>
         </el-row>
         <moreInfo v-show="showMore" v-bind:showMore="showMore" v-bind:currentPatient="currentPatient" v-bind:unit="unit" v-on:getBack="getBack" v-bind:showCard="showCard"></moreInfo>
-        <el-row class="backFunction" v-show="showMore">
-          <a @click="returnBack">返回</a>
+        <el-row class="backFunction" v-show="showMore" style="width: 50px">
+          <a @click="returnBack" style="width: 50px">返回</a>
         </el-row>
         <!---------------连接血糖仪------------->
         <!--step1-->
@@ -248,7 +248,7 @@ export default {
     border-radius: 4px;
     float: left;
     cursor: pointer;
-    padding: 10px 75px;
+    padding: 10px 35px;
     /*margin-left: 130px;*/
     background: #9cd8d8;
     color: #fff;
