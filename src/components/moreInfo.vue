@@ -429,23 +429,7 @@ export default {
   .el-card{
     margin-bottom: 80px;
   }
-  .function{
-    position:fixed;
-    bottom:0px;
-    width:100%;
-    height:100px;
-    /*background-color: #f6724b;*/
-  }
-  .function a{
-    cursor: pointer;
-    padding: 10px 75px;
-    /*margin-left: 130px;*/
-    background: #9cd8d8;
-    color: #fff;
-    font-size: 22px;
-    border-bottom: 3px solid #377ca1;
-    text-decoration: none;
-  }
+
   .el-main {
     overflow-x:hidden!important;
   }

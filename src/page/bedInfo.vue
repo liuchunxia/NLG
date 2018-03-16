@@ -7,14 +7,6 @@
             <card v-bind:patient="patient" v-on:more="getmore"></card>
           </el-col>
         </el-row>
-        <!--<button @click="click">click</button>-->
-        <!--<el-pagination-->
-            <!--background-->
-            <!--:current-page="currentPage"-->
-            <!--layout="prev, pager, next"-->
-            <!--:page-size="10"-->
-            <!--:total="30">-->
-        <!--</el-pagination>-->
         <el-row class="function" v-show="showCard">
           <router-link to="/search">历史信息查询</router-link>
           <el-button type="primary" icon="el-icon-arrow-left" @click="prePage" :disabled="pre_button">上一页</el-button>
@@ -24,6 +16,15 @@
           <router-link to="/machine">备用机一</router-link>
           <a>备用机二</a>
         </el-row>
+        <!--<button @click="click">click</button>-->
+        <!--<el-pagination-->
+            <!--background-->
+            <!--:current-page="currentPage"-->
+            <!--layout="prev, pager, next"-->
+            <!--:page-size="10"-->
+            <!--:total="30">-->
+        <!--</el-pagination>-->
+
         <moreInfo v-show="showMore" v-bind:showMore="showMore" v-bind:currentPatient="currentPatient" v-bind:unit="unit" v-on:getBack="getBack" v-bind:showCard="showCard"></moreInfo>
         <el-row class="backFunction" v-show="showMore" style="width: 50px">
           <a @click="returnBack" style="width: 50px">返回</a>
@@ -261,5 +262,22 @@ export default {
   }
   .footer{
     margin-top: 20px;
+  }
+  .function{
+    position:fixed;
+    bottom:0px;
+    width:100%;
+    height:100px;
+    /*background-color: #f6724b;*/
+  }
+  .function a{
+    cursor: pointer;
+    padding: 10px 75px;
+    /*margin-left: 130px;*/
+    background: #9cd8d8;
+    color: #fff;
+    font-size: 22px;
+    border-bottom: 3px solid #377ca1;
+    text-decoration: none;
   }
 </style>
