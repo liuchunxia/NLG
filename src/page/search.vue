@@ -19,13 +19,13 @@
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
-              <el-form-item label="年龄" prop="age" class="searchItem"
-                            :rules="[{ type: 'number', message: '年龄必须为数字值'}]">
-                <el-input v-model.number="searchForm.age" type="age"></el-input>
+              <el-form-item label="年龄" prop="age" class="searchItem">
+                            <!--:rules="[{ type: 'number', message: '年龄必须为数字值'}]"-->
+                <el-input v-model.number="searchForm.age" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
-              <el-form-item label="电话" prop="telephone" class="searchItem">
+              <el-form-item label="电话" prop="tel" class="searchItem">
                 <el-input v-model="searchForm.tel"></el-input>
               </el-form-item>
             </el-col>
@@ -39,20 +39,20 @@
             <el-col :xs="8" :sm="7" :md="6" :lg="5">
               <el-form-item label="年龄阶段" class="searchItem">
                 <el-col :span="11">
-                  <el-form-item prop="age1">
+                  <el-form-item prop="min_age">
                     <el-input type="number" v-model.number="searchForm.min_age"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col class="line" :span="2">-</el-col>
                 <el-col :span="11">
-                  <el-form-item prop="age2">
+                  <el-form-item prop="max_age">
                     <el-input type="number" v-model.number="searchForm.max_age"></el-input>
                   </el-form-item>
                 </el-col>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="8" :md="8" :lg="8">
-              <el-form-item label="就诊时间" prop="time" class="searchItem">
+              <el-form-item label="就诊时间" prop="date" class="searchItem">
                 <el-date-picker
                   v-model="searchForm.date"
                   type="daterange"
@@ -64,16 +64,16 @@
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="7" :md="6" :lg="5">
-              <el-form-item label="血糖范围" prop="blood" class="searchItem">
+              <el-form-item label="血糖范围" prop="glucose" class="searchItem">
                 <el-col :span="11">
-                  <el-form-item prop="blood1">
-                    <el-input v-model.number="searchForm.min_glucose"></el-input>
+                  <el-form-item prop="min_glucose">
+                    <el-input v-model.number="searchForm.min_glucose" type="number"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col class="line" :span="2">-</el-col>
                 <el-col :span="11">
-                  <el-form-item prop="blood2">
-                    <el-input v-model.number="searchForm.max_glucose"></el-input>
+                  <el-form-item prop="max_glucose">
+                    <el-input v-model.number="searchForm.max_glucose" type="number"></el-input>
                   </el-form-item>
                 </el-col>
               </el-form-item>
@@ -97,11 +97,11 @@
           type="selection"
           width="55">
         </el-table-column>
-        <el-table-column
-          label="日期"
-          width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--label="日期"-->
+          <!--width="120">-->
+          <!--<template slot-scope="scope">{{ scope.row.date }}</template>-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="name"
           label="姓名"
@@ -251,24 +251,24 @@ export default {
         min_glucose: ''
       },
       patients: [
-        { id: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
-        { id: 2, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:30', blood: 6.2 },
-        { id: 3, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:40', blood: 6.3 },
-        { id: 4, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:50', blood: 6.9 },
-        { id: 5, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:20', blood: 6.5 },
-        { id: 6, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:10', blood: 6.5 }
+        // { id: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
+        // { id: 2, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:30', blood: 6.2 },
+        // { id: 3, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:40', blood: 6.3 },
+        // { id: 4, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:50', blood: 6.9 },
+        // { id: 5, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:20', blood: 6.5 },
+        // { id: 6, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:10', blood: 6.5 }
       ],
       multipleSelection: [],
       rules: {
-        min_glucose: [
-          { type: 'number', message: '必须为数字' }
-        ],
-        max_glucose: [
-          { type: 'number', message: '必须为数字' }
-        ],
-        age: [
-          { type: 'number', message: '年龄必须为数字值' }
-        ],
+        // min_glucose: [
+        //   { type: 'number', message: '必须为数字' }
+        // ],
+        // max_glucose: [
+        //   { type: 'number', message: '必须为数字' }
+        // ],
+        // age: [
+        //   { type: 'number', message: '年龄必须为数字值' }
+        // ],
         tel: [
           {pattern: '^1[3|4|5|8][0-9]\\d{8}$', message: '手机号格式错误', trigger: 'blur'}
         ]
@@ -283,7 +283,9 @@ export default {
       excelData: [],
       date: [],
       bloodData: [],
-      showChart: false
+      showChart: false,
+      start_date: '',
+      end_date: ''
     }
   },
   mounted () {
@@ -300,8 +302,22 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('val', this.$refs[formName].model)
-          this.$ajax.get('http://101.200.52.233:8080/api/v1.0/patients/history', this.$refs[formName].model)
+          if (this.$refs[formName].model.date.length === 0) {
+            this.start_date = ''
+            this.end_date = ''
+          } else {
+            this.start_date = this.$refs[formName].model.date[0]
+            this.end_date = this.$refs[formName].model.date[1]
+          }
+          this.$ajax.get('http://101.200.52.233:8080/api/v1.0/patients/history?patient_name=' + this.$refs[formName].model.patient_name +
+            '&sex=' + this.$refs[formName].model.sex + '&age=' + this.$refs[formName].model.age + '&tel=' + this.$refs[formName].model.tel +
+            '&id_number=' + this.$refs[formName].model.id_number + '&max_age=' + this.$refs[formName].model.max_age +
+            '&min_age=' + this.$refs[formName].model.min_age + '&max_glucose=' + this.$refs[formName].model.max_glucose +
+            '&min_glucose=' + this.$refs[formName].model.min_glucose + '&begin_date=' + this.start_date +
+            '&end_date=' + this.end_date
+          )
             .then((response) => {
+              // console.log('date', this.$refs[formName].model.date[0])
               console.log('resp', response)
             })
             .catch(function (error) {
