@@ -76,19 +76,19 @@
         <el-table-column
           prop="patient_name"
           label="姓名"
-          width="50"
+          width="55"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="sex"
           label="性别"
-          width="20"
+          width="40"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="age"
           label="年龄"
-          width="20"
+          width="40"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -100,16 +100,19 @@
         <el-table-column
           prop="doctor"
           label="主治医生"
+          width="70"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="id_number"
           label="身份证/社保卡/就诊卡"
+          width="120"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="date"
           label="日期"
+          width="120"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -119,7 +122,7 @@
         </el-table-column>
         <el-table-column
           prop="glucose"
-          label="血糖值（mmol/L）"
+          label="血糖值(mmol/L)"
           show-overflow-tooltip>
         </el-table-column>
       </el-table>

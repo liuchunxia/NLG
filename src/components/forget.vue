@@ -100,6 +100,21 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.$ajax.post('http://101.200.52.233:8080/api/v1.0/operators/change', {
+            'hospital': this.$refs[formName].model.hospital,
+            'section': this.$refs[formName].model.section,
+            'password': '00000'
+          })
+            .then((response) => {
+              console.log('resp', response)
+              if (response.data.status === 'success') {
+                alert('新的密码为00000')
+              }
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
           alert('submit!')
         } else {
           console.log('error submit!!')

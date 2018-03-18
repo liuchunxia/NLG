@@ -108,11 +108,10 @@ export default {
                 if (this.ruleForm.remember.length !== 0 && this.ruleForm.remember[0] === '记住用户') {
                   console.log('resp.patient_name', response.data.data[0].password)
                   localStorage.setItem('operator_name', response.data.data[0].operator_name)
-                  localStorage.setItem('password', response.data.data[0].password)
                   // this.setCookie(response.data.data[0].patient_name, 7)
                 }
                 if (this.ruleForm.remember.length !== 0 && this.ruleForm.remember[1] === '记住密码') {
-                  localStorage.setItem('password', response.data.data[0].password)
+                  localStorage.setItem('password', this.ruleForm.pass)
                   // this.setCookie(response.data.data[0].patient_name, 7)
                 }
 

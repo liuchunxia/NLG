@@ -12,7 +12,7 @@
             <p>性别：{{patient.sex}}</p>
             <p>年龄：{{patient.age}}</p>
             <p>身份证/社保卡/就诊卡号：{{patient.id_number}}</p>
-            <p>主治医生：{{patient.doctor_name}}</p>
+            <p>主治医生：{{patient.doctor}}</p>
             <p>2017年</p>
           </el-col>
           <!--<el-col :span="10">-->
