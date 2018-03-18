@@ -82,25 +82,40 @@ export default {
           { type: 'array', trigger: 'change' }
         ]
       },
-      dialogVisible: false
+      dialogVisible: false,
+      user_name: ''
     }
   },
   props: ['hospital'],
   mounted () {
+    this.ruleForm.user = localStorage.operator_name
+    this.ruleForm.pass = localStorage.password
   },
   methods: {
     submitForm (formName) {
       localStorage.clear()
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log('val', this.$refs[formName].model)
           this.$ajax.post('http://101.200.52.233:8080/api/v1.0/login', {
             'username': this.$refs[formName].model.user,
             'password': this.$refs[formName].model.pass
           })
             .then((response) => {
-              console.log('resp', response)
-              console.log('resp.statusText', response.data.status)
+              console.log('resp'
+                , response)
               if (response.data.status === 'success') {
+                if (this.ruleForm.remember.length !== 0 && this.ruleForm.remember[0] === '记住用户') {
+                  console.log('resp.patient_name', response.data.data[0].operator_name)
+                  localStorage.setItem('operator_name', response.data.data[0].operator_name)
+                  localStorage.setItem('password', response.data.data[0].password)
+                  // this.setCookie(response.data.data[0].patient_name, 7)
+                }
+                if (this.ruleForm.remember.length !== 0 && this.ruleForm.remember[1] === '记住密码') {
+                  localStorage.setItem('password', response.data.data[0].password)
+                  // this.setCookie(response.data.data[0].patient_name, 7)
+                }
+
                 this.$router.push({path: '/bedInfo'})
                 console.log('data', response.data.data)
                 global.HEADER = response.data.data
@@ -110,6 +125,8 @@ export default {
                 localStorage.setItem('lesion', response.data.data[0].lesion)
                 console.log('localStorage', localStorage)
                 // this.$emit('headerInfo', response.data.data)
+              } else {
+                alert('密码或用户不存在！')
               }
             })
             .catch(function (error) {
