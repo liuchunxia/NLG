@@ -205,16 +205,17 @@
           show-overflow-tooltip>
         </el-table-column>
       </el-table>
-      <!--<div class="block">-->
-        <!--<el-pagination @size-change="handleSizeChange"-->
-                       <!--@current-change="handleCurrentChange"-->
-                       <!--:current-page="currentPage"-->
-                       <!--:page-sizes="[3, 6, 9, 40]"-->
-                       <!--:page-size="10"-->
-                       <!--layout="total, sizes, prev, pager, next, jumper"-->
-                       <!--:total="total">-->
-        <!--</el-pagination>-->
-      <!--</div>-->
+      <div class="block">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-size="20"
+                       :page-sizes="[20]"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total"
+                       v-show="showData">
+        </el-pagination>
+      </div>
       <el-row id="function" v-show="showData">
         <el-button><router-link to="/bedInfo">首页</router-link></el-button>
         <el-button @click="printContent">打印</el-button>
@@ -272,7 +273,7 @@ export default {
           {pattern: '^1[3|4|5|8][0-9]\\d{8}$', message: '手机号格式错误', trigger: 'blur'}
         ]
       },
-      currentPage: 4,
+      currentPage: 1,
       total: 0,
       pageSize: 20,
       // 导出文件el
@@ -314,11 +315,13 @@ export default {
             '&id_number=' + this.$refs[formName].model.id_number + '&max_age=' + this.$refs[formName].model.max_age +
             '&min_age=' + this.$refs[formName].model.min_age + '&max_glucose=' + this.$refs[formName].model.max_glucose +
             '&min_glucose=' + this.$refs[formName].model.min_glucose + '&begin_date=' + this.start_date +
-            '&end_date=' + this.end_date
+            '&end_date=' + this.end_date + '&page=' + this.currentPage
           )
             .then((response) => {
               // console.log('date', this.$refs[formName].model.date[0])
               console.log('resp', response)
+              this.patients = response.data.datas
+              this.total = response.data.count
             })
             .catch(function (error) {
               console.log('error', error)
@@ -356,6 +359,8 @@ export default {
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.submitForm()
     },
     downloadFile: function (rs) {
       // 点击导出按钮

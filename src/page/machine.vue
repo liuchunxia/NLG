@@ -127,7 +127,6 @@
         </el-table-column>
       </el-table>
       <div class="block">
-        <!--:page-sizes="[3, 6, 9, 40]"-->
         <el-pagination @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
