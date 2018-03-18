@@ -292,6 +292,8 @@ export default {
       } else {
         this.showChart = true
         this.showData = false
+        this.bloodData = []
+        this.date = []
         this.chart.forEach(val => {
           this.bloodData.push(val.glucose)
           this.date.push(val.time)

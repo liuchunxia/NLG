@@ -2,7 +2,7 @@
   <BasePage>
     <header></header>
     <el-row slot="main">
-      <el-row>
+      <el-row v-show="showData">
         <el-form :model="searchForm" :rules="rules" ref="searchForm" label-width="100px" class="searchForm">
           <el-row>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
@@ -215,7 +215,7 @@
                        <!--:total="total">-->
         <!--</el-pagination>-->
       <!--</div>-->
-      <el-row id="function">
+      <el-row id="function" v-show="showData">
         <el-button><router-link to="/bedInfo">首页</router-link></el-button>
         <el-button @click="printContent">打印</el-button>
         <a id="downlink" style="display: none"></a>
@@ -223,11 +223,10 @@
         <el-button @click="drawLine">数值/曲线</el-button>
         <el-button>平均值：{{mean}}</el-button>
       </el-row>
-      <!--<div>-->
-        <!--<a id="downlink"></a>-->
-        <!--<el-button class="button" @click="downloadFile(patients)">导出</el-button>-->
-      <!--</div>-->
-      <el-col id="myChart" :style="{width: '100%', height: '300px'}" v-show="showChart"></el-col>
+      <el-row v-show="showChart">
+        <el-col id="myChart" :style="{width: '100%', height: '300px'}"></el-col>
+        <el-button @click="returnData" type="warning">数据/曲线</el-button>
+      </el-row>
     </el-row>
   </BasePage>
 </template>
@@ -284,6 +283,7 @@ export default {
       date: [],
       bloodData: [],
       showChart: false,
+      showData: true,
       start_date: '',
       end_date: ''
     }
@@ -464,6 +464,13 @@ export default {
       document.body.innerHTML = oldContent
       return false
     },
+    notice () {
+      this.$message({
+        showClose: true,
+        message: '请选择数据',
+        type: 'error'
+      })
+    },
     drawLine: function () {
       this.showChart = !this.showChart
       // this.showMore = !this.showMore
@@ -472,11 +479,21 @@ export default {
       // console.log('chartend')
       console.log('chart')
       console.log(this.patients)
-      this.patients.forEach(val => {
-        this.bloodData.push(val.blood)
-        this.date.push(val.time)
-        // console.log(val.blood)
-      })
+      this.bloodData = []
+      this.date = []
+      if (this.chart.length === 0) {
+        this.notice()
+      } else {
+        this.showChart = true
+        this.showData = false
+        this.bloodData = []
+        this.date = []
+        this.chart.forEach(val => {
+          this.bloodData.push(val.glucose)
+          this.date.push(val.time)
+          // console.log(val.blood)
+        })
+      }
       // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
       document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
       console.log(document.documentElement.clientWidth)
@@ -498,6 +515,10 @@ export default {
           type: 'line'
         }]
       })
+    },
+    returnData () {
+      this.showChart = false
+      this.showData = true
     }
   }
 }

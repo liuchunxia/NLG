@@ -4,6 +4,7 @@
     <el-row slot="main">
       <!--printStart-->
       <el-table
+        v-show="showData"
         ref="multipleTable"
         :data="patients"
         tooltip-effect="dark"
@@ -14,7 +15,7 @@
           width="55">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="patient_name"
           label="姓名"
           width="120">
         </el-table-column>
@@ -29,7 +30,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="telephone"
+          prop="tel"
           label="联系电话"
           show-overflow-tooltip>
         </el-table-column>
@@ -39,7 +40,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="idCard"
+          prop="id_number"
           label="身份证/社保卡/就诊卡"
           show-overflow-tooltip>
         </el-table-column>
@@ -54,7 +55,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="blood"
+          prop="glucose"
           label="血糖值（mmol/L）"
           show-overflow-tooltip>
         </el-table-column>
@@ -73,24 +74,27 @@
         style="width: 100%; display: none"
         @selection-change="handleSelectionChange">
         <el-table-column
-          prop="name"
+          prop="patient_name"
           label="姓名"
+          width="50"
           show-overflow-tooltip>
-          <el-input placeholder="请输入内容"></el-input>
         </el-table-column>
         <el-table-column
           prop="sex"
           label="性别"
+          width="20"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="age"
           label="年龄"
+          width="20"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="telephone"
+          prop="tel"
           label="联系电话"
+          width="80"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -99,7 +103,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="idCard"
+          prop="id_number"
           label="身份证/社保卡/就诊卡"
           show-overflow-tooltip>
         </el-table-column>
@@ -114,25 +118,27 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="blood"
+          prop="glucose"
           label="血糖值（mmol/L）"
           show-overflow-tooltip>
         </el-table-column>
       </el-table>
-      <!--<div class="block">-->
-      <!--<el-pagination @size-change="handleSizeChange"-->
-      <!--@current-change="handleCurrentChange"-->
-      <!--:current-page="currentPage"-->
-      <!--:page-sizes="[3, 6, 9, 40]"-->
-      <!--:page-size="10"-->
-      <!--layout="total, sizes, prev, pager, next, jumper"-->
-      <!--:total="total">-->
-      <!--</el-pagination>-->
-      <!--</div>-->
-      <el-row id="function">
+      <div class="block">
+        <!--:page-sizes="[3, 6, 9, 40]"-->
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-size="20"
+                       :page-sizes="[20]"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total"
+                       v-show="showData">
+      </el-pagination>
+      </div>
+      <el-row id="function" v-show="showData">
         <el-button><router-link to="/bedInfo">首页</router-link></el-button>
         <el-button @click="printContent">打印</el-button>
-        <el-button>数值/曲线</el-button>
+        <el-button @click="drawLine">数值/曲线</el-button>
       </el-row>
       <!--<div>-->
       <!--<a id="downlink"></a>-->
@@ -181,6 +187,12 @@
           <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
         </div>
       </el-dialog>
+
+      <!--图表显示-->
+      <el-row v-show="showChart">
+        <el-col id="myChart" :style="{width: '100%', height: '300px'}"></el-col>
+        <el-button @click="returnData" type="warning">数据/曲线</el-button>
+      </el-row>
     </el-row>
   </BasePage>
 </template>
@@ -191,12 +203,12 @@ export default {
   data () {
     return {
       patients: [
-        { id: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
-        { id: 2, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.2 },
-        { id: 3, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.3 },
-        { id: 4, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.9 },
-        { id: 5, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
-        { id: 6, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 }
+        // { id: 1, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
+        // { id: 2, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.2 },
+        // { id: 3, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.3 },
+        // { id: 4, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.9 },
+        // { id: 5, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 },
+        // { id: 6, SN: '123', name: 'Tom', telephone: '1235', sex: '男', age: 70, idCard: '34214', doctor: 'Sam', date: '2017-12-21', time: '6:00', blood: 6.5 }
       ],
       multipleSelection: [],
       rules: {
@@ -210,7 +222,7 @@ export default {
           { type: 'number', message: '年龄必须为数字值' }
         ]
       },
-      currentPage: 4,
+      currentPage: 1,
       total: 0,
       pageSize: 20,
       editLoading: false,
@@ -223,8 +235,16 @@ export default {
         telephone: '',
         idCard: ''
       },
-      index: ''
+      index: '',
+      chart: [],
+      showChart: false,
+      showData: true,
+      bloodData: [],
+      date: []
     }
+  },
+  mounted () {
+    this.getInfo()
   },
   methods: {
     submitForm (formName) {
@@ -243,6 +263,7 @@ export default {
     handleSelectionChange (vals) {
       this.multipleSelection = vals
       this.excelData = vals
+      this.chart = vals
     },
     handleEdit (index, row) {
       // console.log(typeof (this.currentPatient.record[0].blood))
@@ -280,6 +301,9 @@ export default {
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getInfo()
+      console.log(`currentPage`, this.currentPage)
     },
     printContent (e) {
       let subOutputRankPrint = document.getElementById('subOutputRank-print')
@@ -291,6 +315,79 @@ export default {
       window.location.reload()
       document.body.innerHTML = oldContent
       return false
+    },
+    getInfo () {
+      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/datas/guard?sn=00000' + '&page=' + this.currentPage)
+        .then((response) => {
+          // console.log('date', this.$refs[formName].model.date[0])
+          this.patients = response.data.datas
+          this.total = response.data.count
+          console.log('resp', response)
+        })
+        .catch(function (error) {
+          console.log('error', error)
+          alert('网络连接有误！')
+        })
+    },
+    notice () {
+      this.$message({
+        showClose: true,
+        message: '请选择数据',
+        type: 'error'
+      })
+    },
+    drawLine: function () {
+      console.log('chart', this.chart)
+      if (this.chart.length === 0) {
+        this.notice()
+      } else {
+        this.showChart = true
+        this.showData = false
+        this.bloodData = []
+        this.bloodData = []
+        this.chart.forEach(val => {
+          this.bloodData.push(val.glucose)
+          this.date.push(val.time)
+          // console.log(val.blood)
+        })
+        // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
+        document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
+        console.log(document.documentElement.clientWidth)
+        console.log('chartend')
+        let myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        myChart.setOption({
+          title: { text: '在Vue中使用echarts' },
+          tooltip: {},
+          toolbox: {
+            show: true,
+            feature: {
+              dataZoom: {
+                yAxisIndex: 'none'
+              },
+              dataView: {readOnly: false},
+              magicType: {type: ['line', 'bar']},
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          xAxis: {
+            type: 'category',
+            data: this.date
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: this.bloodData,
+            type: 'line'
+          }]
+        })
+      }
+    },
+    returnData () {
+      this.showChart = false
+      this.showData = true
     }
   }
 }

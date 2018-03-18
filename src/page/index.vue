@@ -31,6 +31,13 @@ export default {
       isEditing: 'save'
     }
   },
+  mounted () {
+    localStorage.setItem('hospital', '')
+    localStorage.setItem('office', '')
+    localStorage.setItem('lesion', '')
+    console.log(localStorage.operator_name)
+    console.log(localStorage.password)
+  },
   methods: {
     changeComponent: function () {
       console.log('loginwho', this.show, this.forgeted)
