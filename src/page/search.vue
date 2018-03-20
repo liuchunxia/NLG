@@ -6,7 +6,7 @@
         <el-form :model="searchForm" :rules="rules" ref="searchForm" label-width="100px" class="searchForm">
           <el-row>
             <el-col :xs="8" :sm="7" :md="5" :lg="4">
-              <el-form-item label="姓名" prop="name" class="searchItem">
+              <el-form-item label="姓名" prop="patient_name" class="searchItem">
                 <el-input v-model="searchForm.patient_name"></el-input>
               </el-form-item>
             </el-col>
@@ -103,7 +103,7 @@
           <!--<template slot-scope="scope">{{ scope.row.date }}</template>-->
         <!--</el-table-column>-->
         <el-table-column
-          prop="name"
+          prop="patient_name"
           label="姓名"
           width="120">
         </el-table-column>
@@ -113,7 +113,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="telephone"
+          prop="tel"
           label="联系电话"
           show-overflow-tooltip>
         </el-table-column>
@@ -123,7 +123,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="idCard"
+          prop="id_number"
           label="身份证/社保卡/就诊卡"
           show-overflow-tooltip>
         </el-table-column>
@@ -160,7 +160,7 @@
           <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="patient_name"
           label="姓名"
           width="120">
         </el-table-column>
@@ -170,7 +170,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="telephone"
+          prop="tel"
           label="联系电话"
           show-overflow-tooltip>
         </el-table-column>
@@ -180,7 +180,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="idCard"
+          prop="id_number"
           label="身份证/社保卡/就诊卡"
           show-overflow-tooltip>
         </el-table-column>

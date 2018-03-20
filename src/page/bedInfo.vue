@@ -13,8 +13,8 @@
           <el-button type="primary" @click="nextPage" :disabled="next_button">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
           <!--<el-button type="primary" @click="prePage" >上一页</el-button>-->
           <!--<a>下一页</a>-->
-          <router-link to="/machine">备用机一</router-link>
-          <a>备用机二</a>
+          <router-link to="/machine?sn=00000">备用机一</router-link>
+          <router-link to="/machine?sn=11111">备用机二</router-link>
         </el-row>
         <!--<button @click="click">click</button>-->
         <!--<el-pagination-->

@@ -57,7 +57,14 @@
         <el-table-column
           prop="glucose"
           label="血糖值（mmol/L）"
-          show-overflow-tooltip>
+          show-overflow-tooltip
+          v-if="unit">
+        </el-table-column>
+        <el-table-column
+          prop="glucose"
+          label="血糖值（mg/dL）"
+          show-overflow-tooltip
+          v-else>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -141,6 +148,7 @@
         <el-button><router-link to="/bedInfo">首页</router-link></el-button>
         <el-button @click="printContent">打印</el-button>
         <el-button @click="drawLine">数值/曲线</el-button>
+        <el-button @click="changUnit">单位转换</el-button>
       </el-row>
       <!--<div>-->
       <!--<a id="downlink"></a>-->
@@ -242,11 +250,16 @@ export default {
       showChart: false,
       showData: true,
       bloodData: [],
-      date: []
+      date: [],
+      unit: true,
+      sn: '',
+      data_id: 0
     }
   },
   mounted () {
     this.getInfo()
+    console.log('rul', location.href)
+    this.UrlSearch()
   },
   methods: {
     submitForm (formName) {
@@ -271,6 +284,7 @@ export default {
       // console.log(typeof (this.currentPatient.record[0].blood))
       this.index = index
       console.log(row)
+      this.data_id = row.data_id
       this.dialogVisible = true
       this.editFormVisible = true
       this.editForm = Object.assign({}, row)
@@ -279,16 +293,34 @@ export default {
     editSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.patients[this.index].name = this.editForm.name
-          this.patients[this.index].sex = this.editForm.sex
-          this.patients[this.index].age = this.editForm.age
-          this.patients[this.index].telephone = this.editForm.telephone
-          this.patients[this.index].doctor = this.editForm.doctor
-          this.patients[this.index].name = this.editForm.name
+          this.$ajax.put('http://101.200.52.233:8080/datas/guard' + this.data_id, {
+            'sn': this.sn,
+            'id_number': this.$refs[formName].model.idCard,
+            'sex': this.$refs[formName].model.sex,
+            'age': this.$refs[formName].model.age,
+            'tel': this.$refs[formName].model.tel,
+            'doctor': this.$refs[formName].model.doctor
+            // 'date': this.$refs[formName].model.date,
+            // 'time': this.$refs[formName].model.time
+            // 'glucose': this.$refs[formName].model.blood
+          })
+            .then((response) => {
+              this.patients[this.index].name = this.editForm.name
+              this.patients[this.index].sex = this.editForm.sex
+              this.patients[this.index].age = this.editForm.age
+              this.patients[this.index].telephone = this.editForm.telephone
+              this.patients[this.index].doctor = this.editForm.doctor
+              this.patients[this.index].idCard = this.editForm.idCard
+              console.log('resp', response)
+              this.editFormVisible = false
+              this.dialogVisible = false
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
           // this.currentPatient.record[this.index].time = this.editForm.time
           // this.currentPatient.record[this.index].blood = this.editForm.blood
-          this.editFormVisible = false
-          this.dialogVisible = false
         } else {
           console.log('error submit!!')
           return false
@@ -319,7 +351,7 @@ export default {
       return false
     },
     getInfo () {
-      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/datas/guard?sn=00000' + '&page=' + this.currentPage)
+      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/datas/guard?sn=' + this.sn + '&page=' + this.currentPage)
         .then((response) => {
           // console.log('date', this.$refs[formName].model.date[0])
           this.patients = response.data.datas
@@ -390,6 +422,37 @@ export default {
     returnData () {
       this.showChart = false
       this.showData = true
+    },
+    changUnit () {
+      this.unit = !this.unit
+      console.log('red', this.patients)
+      if (!this.unit) {
+        this.patients.forEach(record => {
+          record.glucose = (record.glucose * 18).toFixed(2)
+          record.glucose = parseFloat(record.glucose)
+          // console.log('type', typeof(record.glucose))
+        })
+      } else {
+        this.patients.forEach(record => {
+          record.glucose = (record.glucose / 18).toFixed(2)
+        })
+      }
+    },
+    UrlSearch () {
+      let name, value
+      let str = location.href
+      let num = str.indexOf('?')
+      str = str.substr(num + 1)
+      let arr = str.split('&')
+      for (let i = 0; i < arr.length; i++) {
+        num = arr[i].indexOf('=')
+        if (num > 0) {
+          name = arr[i].substring(0, num)
+          value = arr[i].substr(num + 1)
+          this[name] = value
+        }
+        this.sn = this[name]
+      }
     }
   }
 }
