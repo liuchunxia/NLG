@@ -92,7 +92,8 @@
         :data="patients"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange"
+        v-show="showData">
         <el-table-column
           type="selection"
           width="55">
@@ -297,8 +298,22 @@ export default {
     })
     this.mean = (this.sumBlood / this.total).toFixed(2)
     console.log(this.sumBlood)
+    this.getAll()
   },
   methods: {
+    getAll () {
+      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/patients/history?page=' + this.currentPage)
+        .then((response) => {
+          this.total = response.data.count
+          this.patients = response.data.datas
+          console.log('history', response)
+          console.log('currentPage', this.currentPage)
+        })
+        .catch(function (error) {
+          console.log('error', error)
+          alert('网络连接有误！')
+        })
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -338,18 +353,19 @@ export default {
     },
     handleSelectionChange (vals) {
       this.multipleSelection = vals
+      this.chart = vals
       this.excelData = vals
       if (vals) {
         this.sumBlood = 0
         vals.forEach(val => {
-          this.sumBlood += val.blood
+          this.sumBlood += val.glucose
         })
         console.log(this.sumBlood)
         this.mean = (this.sumBlood / vals.length).toFixed(2)
       }
       if (isNaN(this.mean)) {
         this.patients.forEach(val => {
-          this.sumBlood += val.blood
+          this.sumBlood += val.glucose
         })
         this.mean = (this.sumBlood / this.total).toFixed(2)
       }
@@ -360,7 +376,8 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      this.submitForm()
+      this.getAll()
+      // this.submitForm()
     },
     downloadFile: function (rs) {
       // 点击导出按钮
