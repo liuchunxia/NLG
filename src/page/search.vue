@@ -143,7 +143,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="blood"
+          prop="glucose"
           label="血糖值（mmol/L）"
           show-overflow-tooltip>
         </el-table-column>
@@ -200,7 +200,7 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="blood"
+          prop="glucose"
           label="血糖值（mmol/L）"
           show-overflow-tooltip>
         </el-table-column>

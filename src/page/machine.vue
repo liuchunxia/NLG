@@ -293,7 +293,7 @@ export default {
     editSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$ajax.put('http://101.200.52.233:8080/datas/guard' + this.data_id, {
+          this.$ajax.put('http://101.200.52.233:8080/datas/guard/' + this.data_id, {
             'sn': this.sn,
             'id_number': this.$refs[formName].model.idCard,
             'sex': this.$refs[formName].model.sex,
@@ -356,7 +356,7 @@ export default {
           // console.log('date', this.$refs[formName].model.date[0])
           this.patients = response.data.datas
           this.total = response.data.count
-          console.log('resp', response)
+          console.log('guard', response)
         })
         .catch(function (error) {
           console.log('error', error)
