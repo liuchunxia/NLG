@@ -157,23 +157,27 @@
       <!--编辑界面-->
       <el-dialog title="填写病人信息" :close-on-click-modal="false" :visible.sync="dialogVisible" width="484px">
         <el-form :model="editForm" label-width="180px" ref="editForm" >
-          <el-form-item label="姓名" prop="name">
-            <el-input v-model="editForm.name" auto-complete="off"></el-input>
+          <el-form-item label="姓名" prop="patient_name">
+            <el-input v-model="editForm.patient_name" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="性别" prop="sex">
-            <el-input v-model="editForm.sex" auto-complete="off"></el-input>
+              <el-radio-group v-model="editForm.sex">
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
+              </el-radio-group>
+            <!--<el-input v-model="editForm.sex" auto-complete="off"></el-input>-->
           </el-form-item>
           <el-form-item label="年龄" prop="age">
             <el-input v-model="editForm.age" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" prop="telephone">
-            <el-input v-model="editForm.telephone" auto-complete="off"></el-input>
+          <el-form-item label="联系电话" prop="tel">
+            <el-input v-model="editForm.tel" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="主治医生" prop="doctor">
             <el-input v-model="editForm.doctor" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="身份证/社保卡/就诊卡" prop="idCard">
-            <el-input v-model="editForm.idCard" auto-complete="off"></el-input>
+          <el-form-item label="身份证/社保卡/就诊卡" prop="id_number">
+            <el-input v-model="editForm.id_number" auto-complete="off"></el-input>
           </el-form-item>
           <!--<el-form-item label="日期" prop="dates">-->
             <!--&lt;!&ndash;<el-input v-model="editForm.date" auto-complete="off"></el-input>&ndash;&gt;-->
@@ -239,11 +243,11 @@ export default {
       dialogVisible: false,
       editForm: {
         id: 0,
-        name: '',
+        patient_name: '',
         sex: '',
         age: '',
-        telephone: '',
-        idCard: ''
+        tel: '',
+        id_number: ''
       },
       index: '',
       chart: [],
@@ -293,9 +297,10 @@ export default {
     editSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$ajax.put('http://101.200.52.233:8080/datas/guard/' + this.data_id, {
+          this.$ajax.put('http://101.200.52.233:8080/api/v1.0/datas/guard/' + this.data_id, {
             'sn': this.sn,
-            'id_number': this.$refs[formName].model.idCard,
+            'id_number': this.$refs[formName].model.id_number,
+            'patient_name': this.$refs[formName].model.patient_name,
             'sex': this.$refs[formName].model.sex,
             'age': this.$refs[formName].model.age,
             'tel': this.$refs[formName].model.tel,
@@ -305,12 +310,12 @@ export default {
             // 'glucose': this.$refs[formName].model.blood
           })
             .then((response) => {
-              this.patients[this.index].name = this.editForm.name
+              this.patients[this.index].patient_name = this.editForm.patient_name
               this.patients[this.index].sex = this.editForm.sex
               this.patients[this.index].age = this.editForm.age
-              this.patients[this.index].telephone = this.editForm.telephone
+              this.patients[this.index].tel = this.editForm.tel
               this.patients[this.index].doctor = this.editForm.doctor
-              this.patients[this.index].idCard = this.editForm.idCard
+              this.patients[this.index].id_number = this.editForm.id_number
               console.log('resp', response)
               this.editFormVisible = false
               this.dialogVisible = false

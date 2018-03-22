@@ -114,10 +114,10 @@ export default {
                   localStorage.setItem('password', this.ruleForm.pass)
                   // this.setCookie(response.data.data[0].patient_name, 7)
                 }
-
+                global.cookie = true
                 this.$router.push({path: '/bedInfo'})
                 console.log('data', response.data.data)
-                global.HEADER = response.data.data
+                // global.HEADER = response.data.data
                 // window.localStorage.setItem(response.data.data)
                 localStorage.setItem('hospital', response.data.data[0].hospital)
                 localStorage.setItem('office', response.data.data[0].office)

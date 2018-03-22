@@ -35,6 +35,29 @@
           <!--title="血糖仪连接"-->
           <!--:visible.sync="dialogVisible"-->
           <!--width="30%">-->
+          <!--<img :src="imgUrl">-->
+          <!--&lt;!&ndash;<el-form ref="netForm" :model="netForm" :rules="netrules" label-width="80px">&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-form-item label="网络名称">&ndash;&gt;-->
+              <!--&lt;!&ndash;<el-input v-model="netForm.netName"></el-input>&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-form-item label="网络密码">&ndash;&gt;-->
+              <!--&lt;!&ndash;<el-input type="password" v-model="netForm.password"></el-input>&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
+          <!--&lt;!&ndash;</el-form>&ndash;&gt;-->
+          <!--<el-row class="footer">-->
+            <!--<el-button type="primary" @click="getNet('netForm')">确 定</el-button>-->
+          <!--</el-row>-->
+          <!--<el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>-->
+        <!--</el-dialog>-->
+
+        <el-dialog
+          title="血糖仪连接(1)"
+          :visible.sync="step1"
+          width="30%"
+          :close-on-click-modal="false">
+          <!--<img :src="imgUrl">-->
+          <img src="http://101.200.52.233:8080/api/v1.0/code/server" style="width: 100%">
+          <!--<img src="data:image/png;base64,${imgUrl}">-->
           <!--<el-form ref="netForm" :model="netForm" :rules="netrules" label-width="80px">-->
             <!--<el-form-item label="网络名称">-->
               <!--<el-input v-model="netForm.netName"></el-input>-->
@@ -43,31 +66,38 @@
               <!--<el-input type="password" v-model="netForm.password"></el-input>-->
             <!--</el-form-item>-->
           <!--</el-form>-->
-          <!--<el-row class="footer">-->
-            <!--<el-button type="primary" @click="getNet('netForm')">确 定</el-button>-->
-          <!--</el-row>-->
-          <!--<el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>-->
-        <!--</el-dialog>-->
-
-        <el-dialog
-          title="血糖仪连接"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :close-on-click-modal="false">
-          <el-form ref="netForm" :model="netForm" :rules="netrules" label-width="80px">
-            <el-form-item label="网络名称">
-              <el-input v-model="netForm.netName"></el-input>
-            </el-form-item>
-            <el-form-item label="网络密码">
-              <el-input type="password" v-model="netForm.password"></el-input>
-            </el-form-item>
-          </el-form>
           <el-row class="footer">
-            <el-button type="primary" @click="getNet('netForm')">确 定</el-button>
+            <el-button type="primary" @click="submitServer">确 定</el-button>
           </el-row>
           <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
         </el-dialog>
-
+        <el-dialog
+          title="血糖仪连接(2)"
+          :visible.sync="step2"
+          width="30%"
+          :close-on-click-modal="false">
+          <img src="http://101.200.52.233:8080/api/v1.0/code/route" style="width: 100%">
+          <el-row class="footer">
+            <el-button type="primary" @click="getWifi">确 定</el-button>
+          </el-row>
+          <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+        </el-dialog>
+        <el-dialog
+          title="血糖仪连接(3)"
+          :visible.sync="step3"
+          width="30%"
+          :close-on-click-modal="false">
+          <!--<img src="http://101.200.52.233:8080/api/v1.0/code/route" style="width: 100%">-->
+          <el-form ref="snForm" :model="snForm" :rules="snRules" label-width="80px">
+          <el-form-item label="血糖仪编号">
+          <el-input v-model="snForm.sn"></el-input>
+          </el-form-item>
+          </el-form>
+          <el-row class="footer">
+            <el-button type="primary" @click="getWifi">确 定</el-button>
+          </el-row>
+          <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+        </el-dialog>
       </el-row>
     </BasePage>
 </template>
@@ -96,24 +126,23 @@ export default {
       bloodData: [],
       showChart: false,
       patient: [],
-      dialogVisible: true,
-      netForm: {
-        netName: '',
-        password: ''
+      step1: false,
+      step2: false,
+      step3: false,
+      snForm: {
+        sn: ''
       },
-      netrules: {
+      snRules: {
         netName: [
-          { required: true, message: '请输入网络名称', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入网络密码', trigger: 'blur' }
+          { sn: true, message: '请输入血糖仪编号', trigger: 'blur' }
         ]
-      }
+      },
+      imgUrl: ''
     }
   },
   mounted () {
     this.getAll()
-    // this.getWifi()
+    this.getServer()
     for (let i in this.patients) {
       console.log('i', this.patients[i])
     }
@@ -172,6 +201,14 @@ export default {
         this.getAll()
       }
     },
+    submitServer () {
+      this.step1 = false
+      this.step2 = true
+    },
+    getWifi () {
+      this.step2 = false
+      this.step3 = true
+    },
     getNet: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -212,19 +249,18 @@ export default {
           console.log('error', error)
           alert('网络连接有误！')
         })
+    },
+    getServer: function () {
+      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/code/server')
+        .then((response) => {
+          console.log('resp', response)
+          this.step1 = true
+        })
+        .catch(function (error) {
+          console.log('error', error)
+          alert('网络连接有误！')
+        })
     }
-    // ,
-    // getWifi: function () {
-    //   this.$ajax.get('http://101.200.52.233:8080/api/v1.0/api/v1.0/code/route')
-    //     .then(function (response) {
-    //       console.log('resp', response)
-    //       console.log('resp.statusText', response.statusText)
-    //     })
-    //     .catch(function (error) {
-    //       console.log('error', error)
-    //       alert('网络连接有误！')
-    //     })
-    // }
   }
 }
 </script>

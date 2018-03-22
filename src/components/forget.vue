@@ -109,15 +109,16 @@ export default {
               console.log('resp', response)
               if (response.data.status === 'success') {
                 alert('新的密码为00000')
+              } else {
+                alert('医院名称或科室填写错误！')
               }
             })
             .catch(function (error) {
               console.log('error', error)
               alert('网络连接有误！')
             })
-          alert('submit!')
         } else {
-          console.log('error submit!!')
+          alert('医院名称或科室填写错误！')
           return false
         }
       })

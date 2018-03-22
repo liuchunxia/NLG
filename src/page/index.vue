@@ -28,15 +28,36 @@ export default {
       who: 'register',
       show: true,
       forgeted: true,
-      isEditing: 'save'
+      isEditing: 'save',
+      cookie: true
     }
   },
   mounted () {
-    localStorage.setItem('hospital', '')
-    localStorage.setItem('office', '')
-    localStorage.setItem('lesion', '')
+    console.log('cookie', this.cookie)
+    this.cookie = false
+    global.cookie = false
+    // if (this.cookie) {
+    //   location.reload()
+    //   this.cookie = false
+    //   localStorage.setItem('hospital', '')
+    //   localStorage.setItem('office', '')
+    //   localStorage.setItem('lesion', '')
+    // }
+    // cookie:
     console.log(localStorage.operator_name)
     console.log(localStorage.password)
+  },
+  watch: {
+    cookie: function (val, oldVal) {
+      console.log('new: %s, old: %s', val, oldVal)
+      if (this.cookie) {
+        // location.reload()
+        this.cookie = false
+        localStorage.setItem('hospital', '')
+        localStorage.setItem('office', '')
+        localStorage.setItem('lesion', '')
+      }
+    }
   },
   methods: {
     changeComponent: function () {

@@ -1,5 +1,1 @@
-global.HEADER = [{
-  hospital: '',
-  office: '',
-  lesion: ''
-}]
+global.cookie = true

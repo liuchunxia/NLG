@@ -11,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
 // axios.defaults.headers.post['X-CSRF-TOKEN'] = document.querySelector('meta[name=csrf-token]').getAttribute('content')
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = global.cookie
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers.post['Content-Type'] = 'application/json'
 // axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'

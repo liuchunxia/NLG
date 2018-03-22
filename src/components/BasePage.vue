@@ -22,10 +22,18 @@ export default {
     }
   },
   mounted () {
-    console.log('globleBasePage', global.HEADER[0].hospital)
+    // console.log('globleBasePage', global.HEADER[0].hospital)
     this.hospital = localStorage.hospital
     this.office = localStorage.office
     this.lesion = localStorage.lesion
+    if (!global.cookie) {
+      // console.log('a')
+      // alert('请重新登录！')
+      this.$router.push({path: '/'})
+      localStorage.setItem('hospital', '')
+      localStorage.setItem('office', '')
+      localStorage.setItem('lesion', '')
+    }
   }
 }
 </script>
