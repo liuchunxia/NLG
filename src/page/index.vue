@@ -33,11 +33,15 @@ export default {
     }
   },
   mounted () {
+    this.$router.push({path: '/'})
     console.log('cookie', this.cookie)
     this.cookie = false
     global.cookie = false
+    localStorage.setItem('hospital', '')
+    localStorage.setItem('office', '')
+    localStorage.setItem('lesion', '')
     // if (this.cookie) {
-    //   location.reload()
+    //   // location.reload()
     //   this.cookie = false
     //   localStorage.setItem('hospital', '')
     //   localStorage.setItem('office', '')
