@@ -8,13 +8,13 @@
           </el-col>
         </el-row>
         <el-row class="function" v-show="showCard">
-          <router-link to="/search">历史信息查询</router-link>
+          <router-link to="/search" class="history">历史信息查询</router-link>
           <el-button type="primary" icon="el-icon-arrow-left" @click="prePage" :disabled="pre_button">上一页</el-button>
           <el-button type="primary" @click="nextPage" :disabled="next_button">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
           <!--<el-button type="primary" @click="prePage" >上一页</el-button>-->
           <!--<a>下一页</a>-->
-          <router-link to="/machine?sn=00000">备用机一</router-link>
-          <router-link to="/machine?sn=11111">备用机二</router-link>
+          <router-link to="/machine?sn=00000" v-bind:class="{ active: isActive1 }" class="machine machine1">备用机一</router-link>
+          <router-link to="/machine?sn=11111" v-bind:class="{ active: isActive2 }" class="machine">备用机二</router-link>
         </el-row>
         <!--<button @click="click">click</button>-->
         <!--<el-pagination-->
@@ -49,54 +49,82 @@
           <!--</el-row>-->
           <!--<el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>-->
         <!--</el-dialog>-->
+        <el-dialog
+          title="请连接血糖仪"
+          :visible.sync="step"
+          width="30%"
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false">
+          <!--<img :src="imgUrl" style="width: 100%">-->
+          <el-button type="primary" @click="getLink">确 定</el-button>
+          <el-row class="footer">
+            <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+          </el-row>
+        </el-dialog>
 
         <el-dialog
           title="血糖仪连接(1)"
           :visible.sync="step1"
           width="30%"
-          :close-on-click-modal="false">
-          <!--<img :src="imgUrl">-->
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false">
+          <!--<img :src="imgUrl" style="width: 100%">-->
           <img src="http://101.200.52.233:8080/api/v1.0/code/server" style="width: 100%">
-          <!--<img src="data:image/png;base64,${imgUrl}">-->
-          <!--<el-form ref="netForm" :model="netForm" :rules="netrules" label-width="80px">-->
-            <!--<el-form-item label="网络名称">-->
-              <!--<el-input v-model="netForm.netName"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="网络密码">-->
-              <!--<el-input type="password" v-model="netForm.password"></el-input>-->
-            <!--</el-form-item>-->
-          <!--</el-form>-->
+          <el-button type="primary" @click="submitServer">确 定</el-button>
           <el-row class="footer">
-            <el-button type="primary" @click="submitServer">确 定</el-button>
+            <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
           </el-row>
-          <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
         </el-dialog>
         <el-dialog
           title="血糖仪连接(2)"
           :visible.sync="step2"
           width="30%"
-          :close-on-click-modal="false">
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false">
           <img src="http://101.200.52.233:8080/api/v1.0/code/route" style="width: 100%">
+          <el-button type="primary" @click="getWifi">确 定</el-button>
           <el-row class="footer">
-            <el-button type="primary" @click="getWifi">确 定</el-button>
+            <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
           </el-row>
-          <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
         </el-dialog>
         <el-dialog
           title="血糖仪连接(3)"
           :visible.sync="step3"
           width="30%"
-          :close-on-click-modal="false">
-          <!--<img src="http://101.200.52.233:8080/api/v1.0/code/route" style="width: 100%">-->
-          <el-form ref="snForm" :model="snForm" :rules="snRules" label-width="80px">
-          <el-form-item label="血糖仪编号">
-          <el-input v-model="snForm.sn"></el-input>
-          </el-form-item>
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false">
+          <!--<img src="http://101.200.52.233:8080/api/v1.0/code/route/" style="width: 100%">-->
+          <!--<img :src="snUrl" style="width: 100%">-->
+          <el-form ref="snForm" :model="snForm" :rules="snRules" label-width="100px">
+            <el-form-item label="血糖仪编号" prop="sn">
+              <el-input v-model="snForm.sn"></el-input>
+            </el-form-item>
+            <el-button style="margin: 10px 0" type="primary" @click="getSn('snForm')">确 定</el-button>
           </el-form>
           <el-row class="footer">
-            <el-button type="primary" @click="getWifi">确 定</el-button>
+            <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
           </el-row>
-          <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+        </el-dialog>
+        <el-dialog
+          title="血糖仪连接(3)"
+          :visible.sync="step4"
+          width="30%"
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false">
+          <img src="http://101.200.52.233:8080/api/v1.0/code/sn?sn=' + sn '" style="width: 100%">
+          <!--<img :src="snUrl" style="width: 100%">-->
+          <el-row>
+            <span>血糖仪编号：{{sn}}</span>
+          </el-row>
+          <el-button type="primary" @click="linkSubmit">确 定</el-button>
+          <el-row class="footer">
+            <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+          </el-row>
         </el-dialog>
       </el-row>
     </BasePage>
@@ -126,23 +154,31 @@ export default {
       bloodData: [],
       showChart: false,
       patient: [],
+      step: true,
       step1: false,
       step2: false,
       step3: false,
+      step4: false,
       snForm: {
         sn: ''
       },
       snRules: {
-        netName: [
-          { sn: true, message: '请输入血糖仪编号', trigger: 'blur' }
+        sn: [
+          { required: true, message: '请输入血糖仪编号', trigger: 'blur' },
+          { min: 8, max: 8, message: '必须8个字符', trigger: 'blur' }
         ]
       },
-      imgUrl: ''
+      imgUrl: '',
+      snUrl: '',
+      isActive1: false,
+      isActive2: false,
+      sn: '',
+      linkNumber: 0
     }
   },
   mounted () {
     this.getAll()
-    this.getServer()
+    // this.getServer()
     for (let i in this.patients) {
       console.log('i', this.patients[i])
     }
@@ -209,31 +245,9 @@ export default {
       this.step2 = false
       this.step3 = true
     },
-    getNet: function (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log('valid', this.$refs[formName])
-          console.log('result', this.$refs[formName].model)
-          // let result = this.$refs[formName].model
-          // this.$ajax.post('http://101.200.52.233:8080/api/v1.0/api/v1.0/code/route', {
-          //   'netName': this.$refs[formName].model.netName,
-          //   'password': this.$refs[formName].model.password
-          // })
-          //   .then(function (response) {
-          //     // console.log('before: ' + this.dialogVisible)
-          //     this.dialogVisible = false
-          //     // console.log('after: ' + this.dialogVisible)
-          //   }.bind(this))
-          //   .catch(function (error) {
-          //     console.log('error', error)
-          //     alert('网络连接有误！')
-          //   })
-          // console.log('status', status)
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+    getLink () {
+      this.step = false
+      this.step1 = true
     },
     getAll: function () {
       this.$ajax.get('http://101.200.52.233:8080/api/v1.0/beds', {
@@ -250,16 +264,51 @@ export default {
           alert('网络连接有误！')
         })
     },
-    getServer: function () {
-      this.$ajax.get('http://101.200.52.233:8080/api/v1.0/code/server')
-        .then((response) => {
-          console.log('resp', response)
-          this.step1 = true
-        })
-        .catch(function (error) {
-          console.log('error', error)
-          alert('网络连接有误！')
-        })
+    // getServer: function () {
+    //   this.$ajax.get('http://101.200.52.233:8080/api/v1.0/code/server')
+    //     .then((response) => {
+    //       console.log('resp', response)
+    //       this.step1 = true
+    //     })
+    //     .catch(function (error) {
+    //       console.log('error', error)
+    //       alert('网络连接有误！')
+    //     })
+    // },
+    getSn (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('val', this.$refs[formName].model)
+          this.$ajax.get('http://101.200.52.233:8080/api/v1.0/code/sn', {
+            params: { 'sn': this.snForm.sn }
+          })
+            .then((response) => {
+              this.sn = this.snForm.sn
+              console.log('resp', response)
+              this.snUrl = 'http://101.200.52.233:8080/api/v1.0/code/sn?sn=' + this.snForm.sn
+              this.step3 = false
+              this.step4 = true
+            })
+            .catch(function (error) {
+              console.log('error', error)
+              alert('网络连接有误！')
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    linkSubmit () {
+      this.linkNumber = this.linkNumber + 1
+      if (this.linkNumber === 1) {
+        this.step4 = false
+        this.isActive1 = true
+        this.step = true
+      } else if (this.linkNumber === 2) {
+        this.step4 = false
+        this.isActive2 = true
+      }
     }
   }
 }
@@ -306,14 +355,35 @@ export default {
     height:100px;
     /*background-color: #f6724b;*/
   }
-  .function a{
+  .function .history{
+    margin-right: 15%;
     cursor: pointer;
-    padding: 10px 75px;
+    padding: 10px 35px;
+    border-radius: 5px;
     /*margin-left: 130px;*/
     background: #9cd8d8;
+    /*background: #c1c1c1;*/
     color: #fff;
     font-size: 22px;
     border-bottom: 3px solid #377ca1;
     text-decoration: none;
+  }
+  .machine1{
+    margin-left: 15%;
+  }
+  .function .machine{
+    cursor: pointer;
+    padding: 10px 35px;
+    /*margin-left: 130px;*/
+    /*background: #9cd8d8;*/
+    border-radius: 5px;
+    background: #c1c1c1;
+    color: #fff;
+    font-size: 22px;
+    border-bottom: 3px solid #377ca1;
+    text-decoration: none;
+  }
+  .active {
+    background: #9cd8d8!important;
   }
 </style>
