@@ -145,10 +145,10 @@
       </el-pagination>
       </div>
       <el-row id="function" v-show="showData">
-        <el-button><router-link to="/bedInfo">首页</router-link></el-button>
-        <el-button @click="printContent">打印</el-button>
-        <el-button @click="drawLine">数值/曲线</el-button>
-        <el-button @click="changUnit">单位转换</el-button>
+        <el-button type="primary"><router-link to="/bedInfo" style="color: #fff">首页</router-link></el-button>
+        <el-button type="primary" @click="printContent">打印</el-button>
+        <el-button type="primary" @click="drawLine">数值/曲线</el-button>
+        <el-button type="primary" @click="changUnit">单位转换</el-button>
       </el-row>
       <!--<div>-->
       <!--<a id="downlink"></a>-->

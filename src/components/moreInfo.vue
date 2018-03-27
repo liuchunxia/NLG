@@ -46,10 +46,10 @@
         </el-table-column>
       </el-table>
       <el-row class="function">
-        <a>平均值：{{meanValue}}</a>
-        <a @click="drawLine">数值/曲线</a>
-        <a @click="printContent">打印</a>
-        <a id="downlink" style="display: none"></a>
+        <el-button type="primary">平均值：{{meanValue}}</el-button>
+        <el-button type="primary"  @click="drawLine">数值/曲线</el-button>
+        <el-button type="primary" @click="printContent">打印</el-button>
+        <el-button type="primary" id="downlink" style="display: none"></el-button>
       </el-row>
 
       <!--<el-row class="function">-->
@@ -437,5 +437,8 @@ export default {
   }
   .footer{
     margin-top: 20px;
+  }
+  .function {
+    z-index: 3;
   }
 </style>

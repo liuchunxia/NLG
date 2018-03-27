@@ -1,7 +1,8 @@
 <template>
   <div>
     <a @click.stop="inputInfo">
-      <el-card class="box-card info-card" v-bind:class="{ active: patient.currentState }">
+      <!--<el-card class="box-card info-card" v-bind:class="{ active: patient.currentState }">-->
+      <el-card class="box-card info-card">
         <!--<button @click="click">click</button>-->
         <el-row :span="24">
           <el-col :span="10">

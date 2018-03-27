@@ -109,6 +109,11 @@
           width="120">
         </el-table-column>
         <el-table-column
+          prop="sex"
+          label="性别"
+          show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
           prop="age"
           label="年龄"
           show-overflow-tooltip>
@@ -128,11 +133,11 @@
           label="身份证/社保卡/就诊卡"
           show-overflow-tooltip>
         </el-table-column>
-        <el-table-column
-          prop="doctor"
-          label="主治医生"
-          show-overflow-tooltip>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="doctor"-->
+          <!--label="主治医生"-->
+          <!--show-overflow-tooltip>-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="date"
           label="日期"
@@ -206,7 +211,7 @@
           show-overflow-tooltip>
         </el-table-column>
       </el-table>
-      <div class="block">
+      <div class="block" v-bind:class="{all: isAll}">
         <el-pagination @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
@@ -217,13 +222,24 @@
                        v-show="showData">
         </el-pagination>
       </div>
+      <div class="block" v-bind:class="{search: isSearch}">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="searchHandleCurrentChange"
+                       :current-page="currentPages"
+                       :page-size="20"
+                       :page-sizes="[20]"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="searchTotal"
+                       v-show="showData">
+        </el-pagination>
+      </div>
       <el-row id="function" v-show="showData">
-        <el-button><router-link to="/bedInfo">首页</router-link></el-button>
-        <el-button @click="printContent">打印</el-button>
+        <el-button type="primary"><router-link to="/bedInfo" style="color: #fff">首页</router-link></el-button>
+        <el-button type="primary" @click="printContent">打印</el-button>
         <a id="downlink" style="display: none"></a>
-        <el-button class="button" @click="downloadFile(excelData)">导出</el-button>
-        <el-button @click="drawLine">数值/曲线</el-button>
-        <el-button>平均值：{{mean}}</el-button>
+        <el-button type="primary" class="button" @click="downloadFile(excelData)">导出</el-button>
+        <el-button type="primary" @click="drawLine">数值/曲线</el-button>
+        <el-button type="primary">平均值：{{mean}}</el-button>
       </el-row>
       <el-row v-show="showChart">
         <el-col id="myChart" :style="{width: '100%', height: '300px'}"></el-col>
@@ -275,7 +291,9 @@ export default {
         ]
       },
       currentPage: 1,
+      currentPages: 1,
       total: 0,
+      searchTotal: 0,
       pageSize: 20,
       // 导出文件el
       outFile: '',
@@ -284,28 +302,41 @@ export default {
       excelData: [],
       date: [],
       bloodData: [],
+      chart: [],
       showChart: false,
       showData: true,
       start_date: '',
-      end_date: ''
+      end_date: '',
+      totalNumber: '',
+      isSearch: true,
+      isAll: false
     }
   },
   mounted () {
-    this.total = this.patients.length
-    this.outFile = document.getElementById('downlink')
-    this.patients.forEach(val => {
-      this.sumBlood += val.blood
-    })
-    this.mean = (this.sumBlood / this.total).toFixed(2)
-    console.log(this.sumBlood)
     this.getAll()
+    console.log('patients', this.patients)
+    // this.total = this.patients.length
+    this.outFile = document.getElementById('downlink')
+    console.log('patients', this.patients)
+    // this.patients.forEach(val => {
+    //   this.sumBlood += val.glucose
+    // })
+    // console.log('blood', this.sumBlood)
+    // this.mean = (this.sumBlood / this.total).toFixed(2)
   },
   methods: {
     getAll () {
       this.$ajax.get('http://101.200.52.233:8080/api/v1.0/patients/history?page=' + this.currentPage)
         .then((response) => {
+          this.sumBlood = 0
           this.total = response.data.count
           this.patients = response.data.datas
+          this.totalNumber = this.patients.length
+          this.patients.forEach(val => {
+            this.sumBlood += val.glucose
+          })
+          console.log('blood', this.sumBlood)
+          this.mean = (this.sumBlood / this.totalNumber).toFixed(2)
           console.log('history', response)
           console.log('currentPage', this.currentPage)
         })
@@ -330,13 +361,15 @@ export default {
             '&id_number=' + this.$refs[formName].model.id_number + '&max_age=' + this.$refs[formName].model.max_age +
             '&min_age=' + this.$refs[formName].model.min_age + '&max_glucose=' + this.$refs[formName].model.max_glucose +
             '&min_glucose=' + this.$refs[formName].model.min_glucose + '&begin_date=' + this.start_date +
-            '&end_date=' + this.end_date + '&page=' + this.currentPage
+            '&end_date=' + this.end_date + '&page=' + this.currentPages
           )
             .then((response) => {
               // console.log('date', this.$refs[formName].model.date[0])
               console.log('resp', response)
               this.patients = response.data.datas
-              this.total = response.data.count
+              this.searchTotal = response.data.count
+              this.isSearch = false
+              this.isAll = true
             })
             .catch(function (error) {
               console.log('error', error)
@@ -377,6 +410,13 @@ export default {
       console.log(`当前页: ${val}`)
       this.currentPage = val
       this.getAll()
+      // this.submitForm()
+    },
+    searchHandleCurrentChange (val) {
+      // console.log(`当前页: ${val}`)
+      console.log('currentPage:', this.currentPage)
+      this.currentPages = val
+      this.submitForm('searchForm')
       // this.submitForm()
     },
     downloadFile: function (rs) {
@@ -499,8 +539,7 @@ export default {
       // console.log('chart')
       // console.log(this.chart)
       // console.log('chartend')
-      console.log('chart')
-      console.log(this.patients)
+      console.log('chart', this.chart.length)
       this.bloodData = []
       this.date = []
       if (this.chart.length === 0) {
@@ -515,28 +554,28 @@ export default {
           this.date.push(val.time)
           // console.log(val.blood)
         })
+        document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
+        console.log(document.documentElement.clientWidth)
+        console.log('chartend')
+        let myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        myChart.setOption({
+          title: { text: '在Vue中使用echarts' },
+          tooltip: {},
+          xAxis: {
+            type: 'category',
+            data: this.date
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: this.bloodData,
+            type: 'line'
+          }]
+        })
       }
       // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
-      document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-      console.log(document.documentElement.clientWidth)
-      console.log('chartend')
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
-      // 绘制图表
-      myChart.setOption({
-        title: { text: '在Vue中使用echarts' },
-        tooltip: {},
-        xAxis: {
-          type: 'category',
-          data: this.date
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: this.bloodData,
-          type: 'line'
-        }]
-      })
     },
     returnData () {
       this.showChart = false
@@ -557,5 +596,8 @@ export default {
   }
   #function a{
     text-decoration: none;
+  }
+  .search, .all {
+    display: none;
   }
 </style>

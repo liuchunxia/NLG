@@ -26,29 +26,10 @@
         <!--</el-pagination>-->
 
         <moreInfo v-show="showMore" v-bind:showMore="showMore" v-bind:currentPatient="currentPatient" v-bind:unit="unit" v-on:getBack="getBack" v-bind:showCard="showCard"></moreInfo>
-        <el-row class="backFunction" v-show="showMore" style="width: 50px">
-          <a @click="returnBack" style="width: 50px">返回</a>
+        <el-row class="backFunction" v-show="showMore" style="width: 90px;">
+          <el-button  @click="returnBack" style="width: 90px" icon="el-icon-arrow-left">返回</el-button>
         </el-row>
         <!---------------连接血糖仪------------->
-        <!--step1-->
-        <!--<el-dialog-->
-          <!--title="血糖仪连接"-->
-          <!--:visible.sync="dialogVisible"-->
-          <!--width="30%">-->
-          <!--<img :src="imgUrl">-->
-          <!--&lt;!&ndash;<el-form ref="netForm" :model="netForm" :rules="netrules" label-width="80px">&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-form-item label="网络名称">&ndash;&gt;-->
-              <!--&lt;!&ndash;<el-input v-model="netForm.netName"></el-input>&ndash;&gt;-->
-            <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-form-item label="网络密码">&ndash;&gt;-->
-              <!--&lt;!&ndash;<el-input type="password" v-model="netForm.password"></el-input>&ndash;&gt;-->
-            <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
-          <!--&lt;!&ndash;</el-form>&ndash;&gt;-->
-          <!--<el-row class="footer">-->
-            <!--<el-button type="primary" @click="getNet('netForm')">确 定</el-button>-->
-          <!--</el-row>-->
-          <!--<el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>-->
-        <!--</el-dialog>-->
         <el-dialog
           title="请连接血糖仪"
           :visible.sync="step"
@@ -179,8 +160,23 @@ export default {
   mounted () {
     this.getAll()
     // this.getServer()
+    if (localStorage.isActive1) {
+      this.isActive1 = true
+      this.step = false
+    } else {
+      this.step = true
+    }
+    if (localStorage.isActive2) {
+      this.isActive2 = true
+      this.step = false
+    }
     for (let i in this.patients) {
       console.log('i', this.patients[i])
+    }
+  },
+  watch: {
+    isActive1: function (val, oldVal) {
+      console.log('new: %s, old: %s', val, oldVal)
     }
   },
   methods: {
@@ -229,7 +225,7 @@ export default {
     nextPage: function () {
       console.log('page:', this.currentPage)
       this.currentPage = this.currentPage + 1
-      if (this.currentPage === 2) {
+      if (this.currentPage === 4) {
         this.pre_button = false
         this.next_button = true
         this.getAll()
@@ -304,10 +300,12 @@ export default {
       if (this.linkNumber === 1) {
         this.step4 = false
         this.isActive1 = true
+        localStorage.setItem('isActive1', true)
         this.step = true
       } else if (this.linkNumber === 2) {
         this.step4 = false
         this.isActive2 = true
+        localStorage.setItem('isActive2', true)
       }
     }
   }
@@ -330,15 +328,21 @@ export default {
     z-index: 99;
     /*background-color: #f6724b;*/
   }
+  .backFunction .el-button{
+    background: #9cd8d8;
+    color: #fff;
+    border-bottom: 3px solid #377ca1;
+    margin-top: 10px;
+  }
   .backFunction a{
     border-radius: 4px;
     float: left;
     cursor: pointer;
-    padding: 10px 35px;
+    padding: 10px 15px;
     /*margin-left: 130px;*/
     background: #9cd8d8;
     color: #fff;
-    font-size: 22px;
+    font-size: 18px;
     border-bottom: 3px solid #377ca1;
     text-decoration: none;
   }
@@ -364,7 +368,7 @@ export default {
     background: #9cd8d8;
     /*background: #c1c1c1;*/
     color: #fff;
-    font-size: 22px;
+    font-size: 18px;
     border-bottom: 3px solid #377ca1;
     text-decoration: none;
   }
@@ -379,7 +383,7 @@ export default {
     border-radius: 5px;
     background: #c1c1c1;
     color: #fff;
-    font-size: 22px;
+    font-size: 18px;
     border-bottom: 3px solid #377ca1;
     text-decoration: none;
   }
