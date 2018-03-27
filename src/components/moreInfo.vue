@@ -203,8 +203,12 @@ export default {
       }
     },
     getMean () {
+      this.sumBlood = 0
       this.currentPatient.datas.forEach(val => {
+        console.log('this.glucose', val.glucose)
         this.sumBlood += val.glucose
+        console.log('this.sumBlood', typeof this.sumBlood)
+        console.log('this.sumBlood', this.sumBlood)
       })
       this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
     },

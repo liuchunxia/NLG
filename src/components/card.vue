@@ -171,13 +171,14 @@ export default {
     changUnit: function (records, unit) {
       if (unit) {
         records.forEach(record => {
-          record.glucose = (record.glucose * 18).toFixed(2)
+          record.glucose = (record.glucose * 18).toFixed(0)
           record.glucose = parseFloat(record.glucose)
           // console.log('type', typeof(record.glucose))
         })
       } else {
         records.forEach(record => {
-          record.glucose = (record.glucose / 18).toFixed(2)
+          record.glucose = (record.glucose / 18).toFixed(0)
+          record.glucose = parseFloat(record.glucose)
         })
       }
     },
