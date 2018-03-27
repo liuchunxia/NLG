@@ -224,4 +224,7 @@ export default {
   .remember .el-checkbox-group{
     margin-left: -130px!important;
   }
+  .el-card {
+    margin-top: 20%;
+  }
 </style>
