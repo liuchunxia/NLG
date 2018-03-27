@@ -176,13 +176,14 @@ export default {
       if (this.showMore) {
         this.getMean()
       }
-    },
-    hidden: function (val, oldVal) {
-      console.log('hidden: %s, old: %s', val, oldVal)
-      if (this.hidden) {
-        this.getHidden()
-      }
     }
+    // ,
+    // hidden: function (val, oldVal) {
+    //   console.log('hidden: %s, old: %s', val, oldVal)
+    //   if (this.hidden) {
+    //     this.getHidden()
+    //   }
+    // }
   },
   methods: {
     handleSelectionChange (vals) {
@@ -219,7 +220,6 @@ export default {
       // console.log(row)
       // this.dialogVisible = true
       // this.editFormVisible = true
-
       this.editForm = Object.assign({}, row)
       this.url = this.currentPatient.datas[this.index].url
       console.log('nowData', this.currentPatient.datas[this.index])
@@ -227,11 +227,13 @@ export default {
     handleDelete (index, row) {
       console.log(index, row)
       this.dialogPassword = true
+      this.hidden = true
       this.url = this.currentPatient.datas[index].url
-      console.log('index', index)
+      console.log('url', this.url)
       this.index = index
     },
     getHidden () {
+      console.log('urlNow', this.url)
       this.$ajax.put('http://101.200.52.233:8080' + this.url, {
         'hidden': true
       })
@@ -357,11 +359,16 @@ export default {
                 if (this.edit) {
                   this.dialogPassword = false
                   this.dialogVisible = true
+                  this.hidden = false
                   this.edit = true
+                  alert('edit')
                 }
-                if (!this.hidden) {
+                if (this.hidden) {
+                  alert('hidden')
                   this.dialogPassword = false
+                  this.edit = false
                   this.hidden = true
+                  this.getHidden()
                 }
               }
             })
