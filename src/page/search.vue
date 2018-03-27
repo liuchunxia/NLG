@@ -234,7 +234,7 @@
         </el-pagination>
       </div>
       <el-row id="function" v-show="showData">
-        <el-button type="primary"><router-link to="/bedInfo" style="color: #fff">首页</router-link></el-button>
+        <router-link to="/bedInfo" style="color: #fff"><el-button type="primary">首页</el-button></router-link>
         <el-button type="primary" @click="printContent">打印</el-button>
         <a id="downlink" style="display: none"></a>
         <el-button type="primary" class="button" @click="downloadFile(excelData)">导出</el-button>

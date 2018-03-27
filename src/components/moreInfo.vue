@@ -78,7 +78,7 @@
           <el-form-item label="日期" prop="date">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
             <!--<el-time-picker type="date" placeholder="选择时间" v-model="editForm.date" style="width: 100%;"  format="yyyy:MM:DD"></el-time-picker>-->
-            <el-date-picker type="date" placeholder="选择日期" id="dates" v-model="editForm.date" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" id="date" v-model="editForm.date" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
           <el-form-item label="时间" prop="time">
             <!--<el-input v-model="editForm.date" auto-complete="off"></el-input>-->
@@ -247,9 +247,10 @@ export default {
           this.$ajax.put('http://101.200.52.233:8080' + this.url, {
             'date': this.$refs[formName].model.date,
             'time': this.$refs[formName].model.time,
-            'glucose': this.$refs[formName].model.blood
+            'glucose': this.$refs[formName].model.glucose
           })
             .then((response) => {
+              console.log('form', this.$refs[formName].model)
               this.currentPatient.datas[this.index].date = this.editForm.date
               this.currentPatient.datas[this.index].time = this.editForm.time
               this.currentPatient.datas[this.index].glucose = this.editForm.glucose

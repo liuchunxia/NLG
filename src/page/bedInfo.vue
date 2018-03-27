@@ -13,8 +13,8 @@
           <el-button type="primary" @click="nextPage" :disabled="next_button">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
           <!--<el-button type="primary" @click="prePage" >上一页</el-button>-->
           <!--<a>下一页</a>-->
-          <router-link to="/machine?sn=00000" v-bind:class="{ active: isActive1 }" class="machine machine1">备用机一</router-link>
-          <router-link to="/machine?sn=11111" v-bind:class="{ active: isActive2 }" class="machine">备用机二</router-link>
+          <router-link to="/machine?sn=00000" v-bind:class="{ activeMachine: isActive1 }" class="machine machine1">备用机一</router-link>
+          <router-link to="/machine?sn=11111" v-bind:class="{ activeMachine: isActive2 }" class="machine">备用机二</router-link>
         </el-row>
         <!--<button @click="click">click</button>-->
         <!--<el-pagination-->
@@ -218,8 +218,9 @@ export default {
         this.next_button = false
         this.getAll()
       } else {
-        // this.next_button = false
         this.getAll()
+        this.pre_button = false
+        this.next_button = false
       }
     },
     nextPage: function () {
@@ -231,6 +232,8 @@ export default {
         this.getAll()
       } else {
         this.getAll()
+        this.pre_button = false
+        this.next_button = false
       }
     },
     submitServer () {
@@ -329,7 +332,8 @@ export default {
     /*background-color: #f6724b;*/
   }
   .backFunction .el-button{
-    background: #9cd8d8;
+    /*background: #9cd8d8;*/
+    background: #409EFF;
     color: #fff;
     border-bottom: 3px solid #377ca1;
     margin-top: 10px;
@@ -340,7 +344,8 @@ export default {
     cursor: pointer;
     padding: 10px 15px;
     /*margin-left: 130px;*/
-    background: #9cd8d8;
+    background: #409EFF;
+    /*background: #9cd8d8;*/
     color: #fff;
     font-size: 18px;
     border-bottom: 3px solid #377ca1;
@@ -365,7 +370,8 @@ export default {
     padding: 10px 35px;
     border-radius: 5px;
     /*margin-left: 130px;*/
-    background: #9cd8d8;
+    background: #409EFF;
+    /*background: #9cd8d8;*/
     /*background: #c1c1c1;*/
     color: #fff;
     font-size: 18px;
@@ -386,6 +392,9 @@ export default {
     font-size: 18px;
     border-bottom: 3px solid #377ca1;
     text-decoration: none;
+  }
+  .activeMachine {
+    background: #409EFF!important;
   }
   .active {
     background: #9cd8d8!important;
