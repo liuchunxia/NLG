@@ -112,7 +112,7 @@
           </el-row>
         </el-card>
       </el-row>
-      <el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>
+      <!--<el-alert class="alert-content" title="">提示：激活系统前确保本机已经连接到网络！</el-alert>-->
     </el-dialog>
   </div>
 </template>
