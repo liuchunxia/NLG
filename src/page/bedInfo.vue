@@ -3,7 +3,7 @@
       <header></header>
       <el-row slot="main">
         <el-row class="cards" v-show="showCard">
-          <el-col :span="6" v-for="(patient,$index) in patients" :key="$index">
+          <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="2" v-for="(patient,$index) in patients" :key="$index">
             <card v-bind:patient="patient" v-on:more="getmore"></card>
           </el-col>
         </el-row>
