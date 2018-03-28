@@ -34,23 +34,26 @@
           <!--&lt;!&ndash;<template slot-scope="scope">{{ scope.row.blood }}</template>&ndash;&gt;-->
           <!--</el-table-column>-->
           <!--</el-table>-->
-          <el-col :span="5">
-            <span>时间</span>
-            <el-col  v-for="(item,index) in patient.datas" :key="index">{{ item.time }}
-            </el-col>
-          </el-col>
-          <el-col :span="4">
-            <span>血糖值</span>
-            <el-col  class="blood">
-              <el-col  v-for="(item,index) in patient.datas" :key="index" >
-                <span v-if="unit===true && item.glucose > 11.1 || item.glucose < 4.4" v-bind:class="{ box: true }">{{ item.glucose }}</span>
-                <span v-else-if="unit===false && (item.glucose > 200 || item.glucose < 79)" v-bind:class="{ box: true }">{{ item.glucose }}</span>
-                <span v-else v-bind:class="{ box: false }"> {{ item.glucose }} </span>
+          <el-col :span="9" style="height: 266px; overflow-y: auto;overflow-x: hidden">
+            <el-col :span="12">
+              <span>时间</span>
+              <el-col  v-for="(item,index) in patient.datas" :key="index">{{ item.time }}
               </el-col>
             </el-col>
+            <el-col :span="12">
+              <span>血糖值</span>
+              <el-col  class="blood">
+                <el-col  v-for="(item,index) in patient.datas" :key="index" >
+                  <span v-if="unit===true && item.glucose > 11.1 || item.glucose < 4.4" v-bind:class="{ box: true }">{{ item.glucose }}</span>
+                  <span v-else-if="unit===false && (item.glucose > 200 || item.glucose < 79)" v-bind:class="{ box: true }">{{ item.glucose }}</span>
+                  <span v-else v-bind:class="{ box: false }"> {{ item.glucose }} </span>
+                </el-col>
+              </el-col>
 
+            </el-col>
           </el-col>
-          <el-col :span="5">
+
+          <el-col :span="5" style="float: left">
             <p :key="unit">{{unit ? '(mmol/L)' : '(mg/dL)'}}</p>
             <p class="change" @click.stop="changUnit(patient.datas, unit), unit=!unit">单位换算</p>
             <p class="more" @click.stop="more(patient)">更多</p>
