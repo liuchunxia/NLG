@@ -14,7 +14,7 @@
             <p>年龄：{{patient.age}}</p>
             <p>身份证/社保卡/就诊卡号：{{patient.id_number}}</p>
             <p>主治医生：{{patient.doctor}}</p>
-            <p>2017年</p>
+            <p>时间：{{nowDate}}</p>
           </el-col>
           <!--<el-col :span="10">-->
           <!--<el-table :data="patient.record" class="cardTable">-->
@@ -154,10 +154,16 @@ export default {
           { required: true, message: '请填写主治医生姓名', trigger: 'blur' }
           // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
         ]
-      }
+      },
+      nowDate: ''
     }
   },
   props: ['patient'],
+  mounted () {
+    this.nowDate = new Date()
+    this.nowDate = this.formatDate(this.nowDate)
+    console.log('now', this.nowDate)
+  },
   watch: {
     unit: function (val, oldVal) {
       console.log('new: %s, old: %s', val, oldVal)
@@ -232,6 +238,14 @@ export default {
           return false
         }
       })
+    },
+    formatDate (date) {
+      let y = date.getFullYear()
+      let m = date.getMonth() + 1
+      m = m < 10 ? '0' + m : m
+      let d = date.getDate()
+      d = d < 10 ? ('0' + d) : d
+      return y + '-' + m + '-' + d
     }
   }
 }
