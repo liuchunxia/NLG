@@ -279,8 +279,8 @@ export default {
   .change:hover, .more:hover{
     cursor: pointer;
     background: #fff;
-    color: #fb752d;
-    border: 1px solid #fb752d;
+    color: #066093;
+    border: 1px solid #066093;
   }
   .change, .more{
     font-size: 14px;
@@ -289,7 +289,7 @@ export default {
   .change{
     padding: 6px 6px;
     border-radius: 4pc;
-    background: #fb752d;
+    background: #066093;
     color: #fff;
     margin-top: 5px!important;
   }
@@ -299,7 +299,7 @@ export default {
     padding: 6px 6px;
     margin-top: 65px!important;
     border-radius: 4pc;
-    background: #fb752d;
+    background: #066093;
     color: #fff;
   }
   .cardTable td, .cardTable th{

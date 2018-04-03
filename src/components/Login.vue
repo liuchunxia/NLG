@@ -5,24 +5,24 @@
           <el-col>
             <form id="register">
               <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="医院" prop="hospital">
-                  <el-input v-model="ruleForm.hospital"></el-input>
-                </el-form-item>
-                <el-form-item label="科室" prop="section">
-                  <el-input v-model="ruleForm.section"></el-input>
-                </el-form-item>
-                <el-form-item label="病区" prop="ward">
-                  <el-input v-model="ruleForm.ward"></el-input>
-                </el-form-item>
+                <!--<el-form-item label="医院" prop="hospital">-->
+                  <!--<el-input v-model="ruleForm.hospital"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="科室" prop="section">-->
+                  <!--<el-input v-model="ruleForm.section"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="病区" prop="ward">-->
+                  <!--<el-input v-model="ruleForm.ward"></el-input>-->
+                <!--</el-form-item>-->
                 <el-form-item label="操作员" prop="user">
                   <el-input v-model="ruleForm.user"></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话" prop="telephone">
-                  <el-input v-model="ruleForm.telephone"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                  <el-input v-model="ruleForm.email"></el-input>
-                </el-form-item>
+                <!--<el-form-item label="联系电话" prop="telephone">-->
+                  <!--<el-input v-model="ruleForm.telephone"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="邮箱" prop="email">-->
+                  <!--<el-input v-model="ruleForm.email"></el-input>-->
+                <!--</el-form-item>-->
                 <el-form-item label="密码" prop="pass">
                   <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
                 </el-form-item>
@@ -160,8 +160,9 @@ export default {
     margin: 10px 8px;
   }
   .el-card{
+    margin-top: 15%;
     /*background-color: #eeeeee;*/
-    border: solid 3px #9cd8d8;
+    border: solid 3px #066093;
   }
   .submit{
     cursor: pointer;
@@ -206,7 +207,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: #fb752d;
+    background: #066093;
     /*background: rgba(255, 62, 28, 0.5);*/
     -webkit-transform: scaleX(0);
     transform: scaleX(0);
@@ -241,7 +242,7 @@ export default {
     float: right;
   }
   .login:hover{
-    color: #fb752d;
+    color: #066093;
   }
   .remember .el-checkbox-group{
     margin-left: -130px!important;
