@@ -235,7 +235,7 @@ export default {
   }
   .login{
     cursor: pointer;
-    color: #9cd8d8;
+    color: #066093;
     padding: 10px 30px;
     font-size: 18px;
     float: right;

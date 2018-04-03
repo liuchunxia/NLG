@@ -181,7 +181,7 @@ export default {
     transform: translateZ(0);
     padding: 10px 75px;
     margin-left: 65px;
-    background: #9cd8d8;
+    background: #066093;
     color: #fff;
     font-size: 22px;
     border-bottom: 3px solid #377ca1;

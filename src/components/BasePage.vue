@@ -3,7 +3,7 @@
         <el-header>
             <!--<img src="../assets/img/logo.png">-->
             <slot name="header">
-                <el-col class="top-left" :xs="24" :sm="6" :md="5" :lg="5" :xl="3"><img src="../assets/img/logo.png"></el-col>
+                <el-col class="top-left" :xs="24" :sm="6" :md="5" :lg="5" :xl="3"><img src="../assets/img/logo_blue.png"></el-col>
                 <el-col class="top-right" :xs="24" :sm="18" :md="19" :lg="19" :xl="21"><h1>{{hospital}}{{office}}{{lesion}}耐利血糖工作站</h1></el-col>
             </slot>
         </el-header>
@@ -50,7 +50,7 @@ export default {
     .top-left{
         float: left;
         height: 88px;
-        border-bottom: 3px solid #f5724b
+        border-bottom: 3px solid #066093
     }
     .top-left img{
         margin-top: 10px;
@@ -58,8 +58,8 @@ export default {
     .top-right{
         height: 88px;
         float: left;
-        /*background-color: #53a1a6;*/
-        background: url("../assets/img/header_bg.jpg");
+        background-color: #066093;
+        /*background: url("../assets/img/header_bg.jpg");*/
     }
     .top-right h1{
         padding-top: 4px;
@@ -69,7 +69,7 @@ export default {
         bottom:0;
         width:100%;
         height:100px;
-        background-color: #f6724b;
+        background-color: #066093;
         z-index: 9;
     }
 </style>
