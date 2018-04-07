@@ -121,8 +121,8 @@ export default {
       // let status
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('valid', this.$refs[formName])
-          console.log('result', this.$refs[formName].model)
+          // console.log('valid', this.$refs[formName])
+          // console.log('result', this.$refs[formName].model)
           // let result = this.$refs[formName].model
           this.$ajax.post('http://101.200.52.233:8080/api/v1.0/operators', {
             'operator_name': this.$refs[formName].model.user,
@@ -134,8 +134,8 @@ export default {
             'mail': this.$refs[formName].model.email
           })
             .then((response) => {
-              console.log('resp', response)
-              console.log('resp.statusText', response.data.status)
+              // console.log('resp', response)
+              // console.log('resp.statusText', response.data.status)
               if (response.data.status === 'success') {
                 this.dialogVisible = true
               }
@@ -151,7 +151,7 @@ export default {
             })
           // console.log('status', status)
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })

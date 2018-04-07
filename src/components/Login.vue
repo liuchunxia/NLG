@@ -96,17 +96,17 @@ export default {
       localStorage.clear()
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('val', this.$refs[formName].model)
+          // console.log('val', this.$refs[formName].model)
           this.$ajax.post('http://101.200.52.233:8080/api/v1.0/login', {
             'username': this.$refs[formName].model.user,
             'password': this.$refs[formName].model.pass
           })
             .then((response) => {
-              console.log('resp'
-                , response)
+              // console.log('resp'
+              //   , response)
               if (response.data.status === 'success') {
                 if (this.ruleForm.remember.length !== 0 && this.ruleForm.remember[0] === '记住用户') {
-                  console.log('resp.patient_name', response.data.data[0].password)
+                  // console.log('resp.patient_name', response.data.data[0].password)
                   localStorage.setItem('operator_name', response.data.data[0].operator_name)
                   // this.setCookie(response.data.data[0].patient_name, 7)
                 }
@@ -116,13 +116,13 @@ export default {
                 }
                 global.cookie = true
                 this.$router.push({path: '/bedInfo'})
-                console.log('data', response.data.data)
+                // console.log('data', response.data.data)
                 // global.HEADER = response.data.data
                 // window.localStorage.setItem(response.data.data)
                 localStorage.setItem('hospital', response.data.data[0].hospital)
                 localStorage.setItem('office', response.data.data[0].office)
                 localStorage.setItem('lesion', response.data.data[0].lesion)
-                console.log('localStorage', localStorage)
+                // console.log('localStorage', localStorage)
                 // this.$emit('headerInfo', response.data.data)
               } else {
                 alert('密码或用户不存在！')
@@ -133,11 +133,11 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
-      console.log('on login')
+      // console.log('on login')
       // this.ruleForm.then((resp) => {
       //   console.log('after', resp)
       //   if (resp.status === 'success') {

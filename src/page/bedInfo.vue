@@ -170,27 +170,27 @@ export default {
       this.isActive2 = true
       this.step = false
     }
-    for (let i in this.patients) {
-      console.log('i', this.patients[i])
-    }
+    // for (let i in this.patients) {
+    //   // console.log('i', this.patients[i])
+    // }
   },
   watch: {
     isActive1: function (val, oldVal) {
-      console.log('new: %s, old: %s', val, oldVal)
+      // console.log('new: %s, old: %s', val, oldVal)
     }
   },
   methods: {
     show (index) {
-      console.log('aaa')
+      // console.log('aaa')
     },
     getBack (msg) {
-      console.log('getBack', msg)
+      // console.log('getBack', msg)
     },
     // click: function () {
     //   alert('aaa')
     // },
     inputInfo: function (msg) {
-      console.log(msg)
+      // console.log(msg)
     },
     getmore: function (msg) {
       this.showMore = true
@@ -211,7 +211,7 @@ export default {
       this.showCard = true
     },
     prePage: function () {
-      console.log('page:', this.currentPage)
+      // console.log('page:', this.currentPage)
       this.currentPage = this.currentPage - 1
       if (this.currentPage === 0) {
         this.pre_button = true
@@ -224,7 +224,7 @@ export default {
       }
     },
     nextPage: function () {
-      console.log('page:', this.currentPage)
+      // console.log('page:', this.currentPage)
       this.currentPage = this.currentPage + 1
       if (this.currentPage === 4) {
         this.pre_button = false
@@ -253,10 +253,10 @@ export default {
         params: { 'page': this.currentPage }
       })
         .then((response) => {
-          console.log('page = ', this.currentPage)
-          console.log('resp.data', response.data.beds)
+          // console.log('page = ', this.currentPage)
+          // console.log('resp.data', response.data.beds)
           this.patients = response.data.beds
-          console.log('resp', this.patients)
+          // console.log('resp', this.patients)
         })
         .catch(function (error) {
           console.log('error', error)
@@ -277,13 +277,13 @@ export default {
     getSn (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('val', this.$refs[formName].model)
+          // console.log('val', this.$refs[formName].model)
           this.$ajax.get('http://101.200.52.233:8080/api/v1.0/code/sn', {
             params: { 'sn': this.snForm.sn }
           })
             .then((response) => {
               this.sn = this.snForm.sn
-              console.log('resp', response)
+              // console.log('resp', response)
               this.snUrl = 'http://101.200.52.233:8080/api/v1.0/code/sn?sn=' + this.snForm.sn
               this.step3 = false
               this.step4 = true
@@ -293,7 +293,7 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })

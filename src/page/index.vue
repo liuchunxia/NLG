@@ -34,7 +34,7 @@ export default {
   },
   mounted () {
     this.$router.push({path: '/'})
-    console.log('cookie', this.cookie)
+    // console.log('cookie', this.cookie)
     this.cookie = false
     global.cookie = false
     localStorage.setItem('hospital', '')
@@ -48,12 +48,12 @@ export default {
     //   localStorage.setItem('lesion', '')
     // }
     // cookie:
-    console.log(localStorage.operator_name)
-    console.log(localStorage.password)
+    // console.log(localStorage.operator_name)
+    // console.log(localStorage.password)
   },
   watch: {
     cookie: function (val, oldVal) {
-      console.log('new: %s, old: %s', val, oldVal)
+      // console.log('new: %s, old: %s', val, oldVal)
       if (this.cookie) {
         // location.reload()
         this.cookie = false
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     changeComponent: function () {
-      console.log('loginwho', this.show, this.forgeted)
+      // console.log('loginwho', this.show, this.forgeted)
       if (this.who === 'Login') {
         this.who = 'register'
         this.show = true
@@ -77,7 +77,7 @@ export default {
       }
     },
     changeforgetComponent: function () {
-      console.log('forgetwho', this.show, this.forgeted)
+      // console.log('forgetwho', this.show, this.forgeted)
       if (this.who === 'forget') {
         this.who = 'Login'
         this.show = false

@@ -262,7 +262,7 @@ export default {
   },
   mounted () {
     this.getInfo()
-    console.log('rul', location.href)
+    // console.log('rul', location.href)
     this.UrlSearch()
   },
   methods: {
@@ -271,7 +271,7 @@ export default {
         if (valid) {
           alert('submit!')
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
@@ -287,7 +287,7 @@ export default {
     handleEdit (index, row) {
       // console.log(typeof (this.currentPatient.record[0].blood))
       this.index = index
-      console.log(row)
+      // console.log(row)
       this.data_id = row.data_id
       this.dialogVisible = true
       this.editFormVisible = true
@@ -316,7 +316,7 @@ export default {
               this.patients[this.index].tel = this.editForm.tel
               this.patients[this.index].doctor = this.editForm.doctor
               this.patients[this.index].id_number = this.editForm.id_number
-              console.log('resp', response)
+              // console.log('resp', response)
               this.editFormVisible = false
               this.dialogVisible = false
             })
@@ -327,7 +327,7 @@ export default {
           // this.currentPatient.record[this.index].time = this.editForm.time
           // this.currentPatient.record[this.index].blood = this.editForm.blood
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
@@ -335,18 +335,18 @@ export default {
       // console.info(this.currentPatient.record)
       // console.info(this.editForm)
     },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
+    // handleSizeChange (val) {
+    //   console.log(`每页 ${val} 条`)
+    // },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      // console.log(`当前页: ${val}`)
       this.currentPage = val
       this.getInfo()
-      console.log(`currentPage`, this.currentPage)
+      // console.log(`currentPage`, this.currentPage)
     },
     printContent (e) {
       let subOutputRankPrint = document.getElementById('subOutputRank-print')
-      console.log(subOutputRankPrint.innerHTML)
+      // console.log(subOutputRankPrint.innerHTML)
       let newContent = subOutputRankPrint.innerHTML
       let oldContent = document.body.innerHTML
       document.body.innerHTML = newContent
@@ -361,7 +361,7 @@ export default {
           // console.log('date', this.$refs[formName].model.date[0])
           this.patients = response.data.datas
           this.total = response.data.count
-          console.log('guard', response)
+          // console.log('guard', response)
         })
         .catch(function (error) {
           console.log('error', error)
@@ -376,7 +376,7 @@ export default {
       })
     },
     drawLine: function () {
-      console.log('chart', this.chart)
+      // console.log('chart', this.chart)
       if (this.chart.length === 0) {
         this.notice()
       } else {
@@ -391,8 +391,8 @@ export default {
         })
         // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
         document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-        console.log(document.documentElement.clientWidth)
-        console.log('chartend')
+        // console.log(document.documentElement.clientWidth)
+        // console.log('chartend')
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
         myChart.setOption({
@@ -430,7 +430,7 @@ export default {
     },
     changUnit () {
       this.unit = !this.unit
-      console.log('red', this.patients)
+      // console.log('red', this.patients)
       if (!this.unit) {
         this.patients.forEach(record => {
           record.glucose = (record.glucose * 18).toFixed(2)

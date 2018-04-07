@@ -314,10 +314,10 @@ export default {
   },
   mounted () {
     this.getAll()
-    console.log('patients', this.patients)
+    // console.log('patients', this.patients)
     // this.total = this.patients.length
     this.outFile = document.getElementById('downlink')
-    console.log('patients', this.patients)
+    // console.log('patients', this.patients)
     // this.patients.forEach(val => {
     //   this.sumBlood += val.glucose
     // })
@@ -335,10 +335,10 @@ export default {
           this.patients.forEach(val => {
             this.sumBlood += val.glucose
           })
-          console.log('blood', this.sumBlood)
+          // console.log('blood', this.sumBlood)
           this.mean = (this.sumBlood / this.totalNumber).toFixed(2)
-          console.log('history', response)
-          console.log('currentPage', this.currentPage)
+          // console.log('history', response)
+          // console.log('currentPage', this.currentPage)
         })
         .catch(function (error) {
           console.log('error', error)
@@ -348,7 +348,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('val', this.$refs[formName].model)
+          // console.log('val', this.$refs[formName].model)
           if (this.$refs[formName].model.date.length === 0) {
             this.start_date = ''
             this.end_date = ''
@@ -365,7 +365,7 @@ export default {
           )
             .then((response) => {
               // console.log('date', this.$refs[formName].model.date[0])
-              console.log('resp', response)
+              // console.log('resp', response)
               this.patients = response.data.datas
               this.searchTotal = response.data.count
               this.isSearch = false
@@ -376,7 +376,7 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
@@ -393,7 +393,7 @@ export default {
         vals.forEach(val => {
           this.sumBlood += val.glucose
         })
-        console.log(this.sumBlood)
+        // console.log(this.sumBlood)
         this.mean = (this.sumBlood / vals.length).toFixed(2)
       }
       if (isNaN(this.mean)) {
@@ -403,18 +403,18 @@ export default {
         this.mean = (this.sumBlood / this.total).toFixed(2)
       }
     },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
+    // handleSizeChange (val) {
+    //   console.log(`每页 ${val} 条`)
+    // },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      // console.log(`当前页: ${val}`)
       this.currentPage = val
       this.getAll()
       // this.submitForm()
     },
     searchHandleCurrentChange (val) {
       // console.log(`当前页: ${val}`)
-      console.log('currentPage:', this.currentPage)
+      // console.log('currentPage:', this.currentPage)
       this.currentPages = val
       this.submitForm('searchForm')
       // this.submitForm()
@@ -442,7 +442,7 @@ export default {
         }
         data = data.concat(tempData)
       })
-      console.log('data', data)
+      // console.log('data', data)
       this.downloadExl(data, '血糖值')
     },
     downloadExl: function (json, downName, type) {
@@ -452,7 +452,7 @@ export default {
       for (let k in json[0]) {
         keyMap.push(k)
       }
-      console.info('keyMap', keyMap, json)
+      // console.info('keyMap', keyMap, json)
       let tmpdata = []
       // 用来保存转换好的json
       json.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
@@ -517,7 +517,7 @@ export default {
     },
     printContent (e) {
       let subOutputRankPrint = document.getElementById('subOutputRank-print')
-      console.log(subOutputRankPrint.innerHTML)
+      // console.log(subOutputRankPrint.innerHTML)
       let newContent = subOutputRankPrint.innerHTML
       let oldContent = document.body.innerHTML
       document.body.innerHTML = newContent
@@ -539,7 +539,7 @@ export default {
       // console.log('chart')
       // console.log(this.chart)
       // console.log('chartend')
-      console.log('chart', this.chart.length)
+      // console.log('chart', this.chart.length)
       this.bloodData = []
       this.date = []
       if (this.chart.length === 0) {
@@ -555,8 +555,8 @@ export default {
           // console.log(val.blood)
         })
         document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-        console.log(document.documentElement.clientWidth)
-        console.log('chartend')
+        // console.log(document.documentElement.clientWidth)
+        // console.log('chartend')
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
         myChart.setOption({

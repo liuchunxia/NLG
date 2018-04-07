@@ -169,7 +169,7 @@ export default {
   },
   props: ['currentPatient', 'unit', 'showMore'],
   mounted () {
-    console.log('unit', this.unit)
+    // console.log('unit', this.unit)
   },
   watch: {
     showMore: function (val, oldVal) {
@@ -190,26 +190,26 @@ export default {
       this.multipleSelection = vals
       this.chart = vals
       this.$emit('chart', this.chart)
-      console.log('vals', vals)
-      console.log(this.chart)
+      // console.log('vals', vals)
+      // console.log(this.chart)
       if (vals) {
         this.sumBlood = 0
         vals.forEach(val => {
           this.sumBlood += val.glucose
         })
-        console.log(this.sumBlood)
+        // console.log(this.sumBlood)
         this.meanValue = (this.sumBlood / vals.length).toFixed(2)
-        console.log('sumBlood', this.sumBlood)
-        console.log('meanValue', this.meanValue)
+        // console.log('sumBlood', this.sumBlood)
+        // console.log('meanValue', this.meanValue)
       }
     },
     getMean () {
       this.sumBlood = 0
       this.currentPatient.datas.forEach(val => {
-        console.log('this.glucose', val.glucose)
+        // console.log('this.glucose', val.glucose)
         this.sumBlood += val.glucose
-        console.log('this.sumBlood', typeof this.sumBlood)
-        console.log('this.sumBlood', this.sumBlood)
+        // console.log('this.sumBlood', typeof this.sumBlood)
+        // console.log('this.sumBlood', this.sumBlood)
       })
       this.meanValue = (this.sumBlood / this.currentPatient.datas.length).toFixed(2)
     },
@@ -222,24 +222,24 @@ export default {
       // this.editFormVisible = true
       this.editForm = Object.assign({}, row)
       this.url = this.currentPatient.datas[this.index].url
-      console.log('nowData', this.currentPatient.datas[this.index])
+      // console.log('nowData', this.currentPatient.datas[this.index])
     },
     handleDelete (index, row) {
-      console.log(index, row)
+      // console.log(index, row)
       this.dialogPassword = true
       this.hidden = true
       this.url = this.currentPatient.datas[index].url
-      console.log('url', this.url)
+      // console.log('url', this.url)
       this.index = index
     },
     getHidden () {
-      console.log('urlNow', this.url)
+      // console.log('urlNow', this.url)
       this.$ajax.put('http://101.200.52.233:8080' + this.url, {
         'hidden': true
       })
         .then((response) => {
           this.currentPatient.datas.splice(this.index, 1)
-          console.log('resp', response)
+          // console.log('resp', response)
         })
         .catch(function (error) {
           console.log('error', error)
@@ -256,11 +256,11 @@ export default {
             'glucose': this.$refs[formName].model.glucose
           })
             .then((response) => {
-              console.log('form', this.$refs[formName].model)
+              // console.log('form', this.$refs[formName].model)
               this.currentPatient.datas[this.index].date = this.editForm.date
               this.currentPatient.datas[this.index].time = this.editForm.time
               this.currentPatient.datas[this.index].glucose = this.editForm.glucose
-              console.log('resp', response)
+              // console.log('resp', response)
               this.editFormVisible = false
               this.dialogVisible = false
             })
@@ -269,14 +269,14 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
     },
     printContent (e) {
       let subOutputRankPrint = document.getElementById('subOutputRank-print')
-      console.log(subOutputRankPrint.innerHTML)
+      // console.log(subOutputRankPrint.innerHTML)
       let newContent = subOutputRankPrint.innerHTML
       let oldContent = document.body.innerHTML
       document.body.innerHTML = newContent
@@ -293,7 +293,7 @@ export default {
       })
     },
     drawLine: function () {
-      console.log('chart', this.chart)
+      // console.log('chart', this.chart)
       if (this.chart.length === 0) {
         this.notice()
       } else {
@@ -308,8 +308,8 @@ export default {
         })
         // document.getElementById('myChart').style.width  = document.getElementById('myChart').width()
         document.getElementById('myChart').style.width = document.documentElement.clientWidth - 10 + 'px'
-        console.log(document.documentElement.clientWidth)
-        console.log('chartend')
+        // console.log(document.documentElement.clientWidth)
+        // console.log('chartend')
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
         myChart.setOption({
@@ -352,19 +352,19 @@ export default {
             'password': this.$refs[formName].model.password
           })
             .then((response) => {
-              console.log('resp', response)
-              console.log('resp.statusText', response.data.status)
+              // console.log('resp', response)
+              // console.log('resp.statusText', response.data.status)
               if (response.data.status === 'success') {
-                console.log('data', response)
+                // console.log('data', response)
                 if (this.edit) {
                   this.dialogPassword = false
                   this.dialogVisible = true
                   this.hidden = false
                   this.edit = true
-                  alert('edit')
+                  // alert('edit')
                 }
                 if (this.hidden) {
-                  alert('hidden')
+                  // alert('hidden')
                   this.dialogPassword = false
                   this.edit = false
                   this.hidden = true
@@ -377,11 +377,11 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
-      console.log('on login')
+      // console.log('on login')
       // this.ruleForm.then((resp) => {
       //   console.log('after', resp)
       //   if (resp.status === 'success') {

@@ -165,18 +165,14 @@ export default {
   mounted () {
     this.nowDate = new Date()
     this.nowDate = this.formatDate(this.nowDate)
-    console.log('now', this.nowDate)
+    // console.log('now', this.nowDate)
   },
   watch: {
     unit: function (val, oldVal) {
-      console.log('new: %s, old: %s', val, oldVal)
+      // console.log('new: %s, old: %s', val, oldVal)
     }
   },
   methods: {
-    click: function () {
-      alert('aaa')
-      console.log(this.patient.record)
-    },
     changUnit: function (records, unit) {
       if (unit) {
         records.forEach(record => {
@@ -192,11 +188,11 @@ export default {
       }
     },
     more: function (patient) {
-      console.log('more', this.patient)
+      // console.log('more', this.patient)
       this.$emit('more', [this.patient, this.unit])
     },
     inputInfo: function (patient) {
-      console.log('aaa', this.patient)
+      // console.log('aaa', this.patient)
       this.dialogVisible = true
       if (this.patient.name === '') {
         this.dialogVisible = true
@@ -206,7 +202,7 @@ export default {
     submitForm (formName, dialogVisible) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.patient.bed_id)
+          // console.log(this.patient.bed_id)
           this.$ajax.post('http://101.200.52.233:8080/api/v1.0/patients', {
             'patient_name': this.$refs[formName].model.name,
             'sex': this.$refs[formName].model.sex,
@@ -217,10 +213,10 @@ export default {
             'bed_id': this.patient.bed_id
           })
             .then((response) => {
-              console.log('resp', response)
-              console.log('resp.statusText', response.data.status)
+              // console.log('resp', response)
+              // console.log('resp.statusText', response.data.status)
               if (response.data.status === 'success') {
-                console.log('result', this.$refs[formName].model)
+                // console.log('result', this.$refs[formName].model)
                 this.patient.patient_name = this.$refs[formName].model.name
                 this.patient.age = this.$refs[formName].model.age
                 this.patient.sex = this.$refs[formName].model.sex
@@ -237,7 +233,7 @@ export default {
               alert('网络连接有误！')
             })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
